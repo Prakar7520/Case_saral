@@ -38,7 +38,7 @@ class _CaseListState extends State<CaseList> {
       if(cases != null){
         getData = true;
         cases.map((value) {
-          if(value.assign_to == userLoggedIn){
+          if(value.assign_to == loggedUserDetail){
             if(value.hearing_date == DateFormat('dd/MM/yyyy').format(DateTime.now())){
               caseListToday.add(value);
             }

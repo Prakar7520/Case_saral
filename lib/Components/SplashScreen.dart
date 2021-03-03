@@ -9,6 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 String userLoggedIn;
+String loggedUserDetail;
+bool toogleData;
 
 class SplashScreen extends StatefulWidget {
   static String id = "SplashScreen";
@@ -23,17 +25,43 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     Provider.of<CaseProvider>(context,listen: false).setCase();
+    Provider.of<CaseProvider>(context,listen: false).setUser();
     super.initState();
+    getToogleData().whenComplete(() async=> null);
     getValidationData().whenComplete(() async{
       startTime();
     });
   }
 
+  Future getToogleData() async{
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var obtainedEmail = sharedPreferences.getBool('notificationToogle');
+    setState(() {
+      toogleData = obtainedEmail;
+    });
+  }
+
   Future getValidationData() async{
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var obtainedEmail = sharedPreferences.getString('LoggedUser');
+    var obtainedUser = sharedPreferences.getString('LoggedUser');
+
     setState(() {
-      userLoggedIn = obtainedEmail;
+      userLoggedIn = obtainedUser;
+      if(obtainedUser == "DM"){
+        loggedUserDetail = "DM";
+      }
+      else if(obtainedUser == "ADCE"){
+        loggedUserDetail = "ADC(E)";
+      }
+      else if(obtainedUser == "ADCHQ"){
+        loggedUserDetail = "ADC(HQ)";
+      }
+      else if(obtainedUser == "SDME"){
+        loggedUserDetail = "SDM(E)";
+      }
+      else{
+        loggedUserDetail = "SDM(HQ)";
+      }
     });
   }
 

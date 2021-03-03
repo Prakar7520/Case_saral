@@ -1,11 +1,10 @@
-
 import 'package:provider/provider.dart';
 import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
+import 'package:ver2/Components/SettingPage.dart';
 import 'package:ver2/Screens/AddRemarks.dart';
 import 'package:ver2/Screens/CaseSearchScreen.dart';
 import 'package:ver2/Screens/CaseStatus.dart';
 import 'package:ver2/Screens/DMHistory.dart';
-import 'package:ver2/Screens/FeedbackScreen.dart';
 import 'package:ver2/Screens/LoginScreen.dart';
 import 'package:ver2/Screens/MyCase.dart';
 import 'package:ver2/Screens/StartPage.dart';
@@ -104,7 +103,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: SplashScreen.id,
         routes:{
-          FeedbackScreen.id: (context) => FeedbackScreen(),
+          SettingPage.id: (context) => SettingPage(),
           WelcomeInstruction.id: (context) => WelcomeInstruction(),
           DMHistory.id: (context) => DMHistory(),
           LoginScreen.id:(context) => LoginScreen(),

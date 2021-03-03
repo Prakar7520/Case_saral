@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ver2/Components/Config.dart';
+import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
 import 'package:ver2/Models/UserModel.dart';
 import 'package:ver2/Screens/StartPage.dart';
 import 'package:ver2/main.dart';
@@ -47,25 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    fetchUser().then((value) {
-      widget.user = value;
-    });
-  }
-
-  Future<List<UserModel>> fetchUser() async {
-    var url = Config.userUrl;
-    var response = await http.get(url);
-    List<UserModel> users = [];
-
-    if (response.statusCode == 200) {
-      for (var note in jsonDecode(response.body)) {
-        users.add(UserModel.fromJson(note));
-      }
-    }
-    else {
-      throw Exception("Failed to Load");
-    }
-    return users;
   }
   // FOR INVALID POP ALERT STUFF///////////////////////////
 
@@ -74,6 +54,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
 
+    Provider.of<CaseProvider>(context).setUser();
+    widget.user = Provider.of<CaseProvider>(context,listen: false).getUser();
 
 
     return new Form(
@@ -226,12 +208,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                           child: Center(
                                             child: FlatButton(
                                               onPressed: () async{
-
                                                 final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                                try{if(widget.user != null){
+                                                try{
+                                                  if(widget.user != null){
                                                   for(var ur in widget.user){
                                                     if(con1 == ur.username && _password.text == ur.password){
-                                                      sharedPreferences.setString('LoggedUser', ur.firstname);
+                                                      sharedPreferences.setString('LoggedUser', ur.username);
                                                       RestartWidget.restartApp(context);
                                                       Navigator.pushReplacement(context, MaterialPageRoute(
                                                           builder: (context) => StartPage()
@@ -240,6 +222,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                                     }
                                                   }
                                                 }
+                                                  if(widget.user == null){
+                                                    setState(() {
+
+                                                    });
+                                                  }
                                                   if(userExist == false){
                                                     _popupDialog(context);
                                                   }

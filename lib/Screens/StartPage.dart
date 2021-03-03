@@ -1,5 +1,8 @@
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
+import 'package:ver2/Components/NotificationPlugin.dart';
+import 'package:ver2/Components/SplashScreen.dart';
 import 'package:ver2/Components/navdrawer.dart';
 import 'package:ver2/Screens/CaseSearchScreen.dart';
 import 'package:ver2/Screens/CaseStatus.dart';
@@ -53,9 +56,28 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
     _controller.addListener(() {
       _selectedIndex = _controller.index;
     });
-
+    getToogleData().whenComplete(() async=> null);
   }
 
+  Future getToogleData() async{
+
+    if(toogleData == null){
+      print("its null");
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      sharedPreferences.setBool('notificationToogle', false);
+    }
+    else{
+      if(toogleData == true){
+        print("hellofrom Strat");
+        // await notificationPlugin.showDailyMorningAtTime();
+        await notificationPlugin.showDailyMorningAtTime();
+        print("1st here");
+        // await notificationPlugin.showDailyEveningAtTime();
+        await notificationPlugin.showDailyEveningAtTime();
+        print("1st here");
+      }
+    }
+  }
 
 
   @override
@@ -70,14 +92,22 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
             child: Image.asset("assets/flutter_footer.png"),
           )
         ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.refresh),
-          onPressed: (){
-            setState(() {
-              Provider.of<CaseProvider>(context,listen: false).setCase();
-              Provider.of<CaseProvider>(context,listen: false).setCase();
-            });
-          },
+        floatingActionButton: Builder(
+          builder: (context) => FloatingActionButton(
+            child: Icon(Icons.refresh),
+            onPressed: (){
+              setState(() {
+                Provider.of<CaseProvider>(context,listen: false).setCase();
+                Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Refreshing....."),
+                      backgroundColor: Colors.blueAccent,
+                    )
+                );
+                Provider.of<CaseProvider>(context,listen: false).setCase();
+              });
+            },
+          ),
         ),
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black),

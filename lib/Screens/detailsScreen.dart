@@ -1,14 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:provider/provider.dart';
-import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
-import 'package:ver2/Components/Spinner.dart';
-import 'package:ver2/Models/DetailScreenArgument.dart';
+import 'dart:io';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
+import 'package:ver2/Models/DetailScreenArgument.dart';
 import 'package:ver2/Models/MyCaseList.dart';
 import '../Components/Config.dart';
+import 'package:dio/dio.dart';
+import 'package:path/path.dart' as path;
+import 'package:open_file/open_file.dart';
+import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class DetailsScreen extends StatefulWidget {
 
@@ -21,6 +28,126 @@ class DetailsScreen extends StatefulWidget {
 
 class _DetailsScreenState extends State<DetailsScreen> {
   final c1 = TextEditingController();
+
+
+  final String _fileUrl = Config.downloadUrl+"/"+1.toString();
+  final String _fileName = "filename.pdf";
+  final Dio _dio = Dio();
+
+  String _progress = "-";
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+  @override
+  void initState() {
+    super.initState();
+
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    final android = AndroidInitializationSettings('@mipmap/ic_launcher');
+    final iOS = IOSInitializationSettings();
+    final initSettings = InitializationSettings(android, iOS);
+
+    flutterLocalNotificationsPlugin.initialize(initSettings, onSelectNotification: _onSelectNotification);
+  }
+
+  Future<void> _onSelectNotification(String json) async {
+    final obj = jsonDecode(json);
+
+    if (obj['isSuccess']) {
+      OpenFile.open(obj['filePath']);
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('Error'),
+          content: Text('${obj['error']}'),
+        ),
+      );
+    }
+  }
+
+  Future<void> _showNotification(Map<String, dynamic> downloadStatus) async {
+    final android = AndroidNotificationDetails(
+        'channel id',
+        'channel name',
+        'channel description',
+        priority: Priority.High,
+        importance: Importance.Max
+    );
+    final iOS = IOSNotificationDetails();
+    final platform = NotificationDetails(android, iOS);
+    final json = jsonEncode(downloadStatus);
+    final isSuccess = downloadStatus['isSuccess'];
+
+    await flutterLocalNotificationsPlugin.show(
+        0, // notification id
+        isSuccess ? 'Success' : 'Failure',
+        isSuccess ? 'File has been downloaded successfully!' : 'There was an error while downloading the file.',
+        platform,
+        payload: json
+    );
+  }
+
+  Future<Directory> _getDownloadDirectory() async {
+    if (Platform.isAndroid) {
+      return await DownloadsPathProvider.downloadsDirectory;
+    }
+
+    return await getApplicationDocumentsDirectory();
+  }
+
+  Future<bool> _requestPermissions() async {
+    var permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+
+    if (permission != PermissionStatus.granted) {
+      await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+      permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+    }
+
+    return permission == PermissionStatus.granted;
+  }
+
+  void _onReceiveProgress(int received, int total) {
+    if (total != -1) {
+      setState(() {
+        _progress = (received / total * 100).toStringAsFixed(0) + "%";
+      });
+    }
+  }
+
+  Future<void> _startDownload(String savePath) async {
+    Map<String, dynamic> result = {
+      'isSuccess': false,
+      'filePath': null,
+      'error': null,
+    };
+
+    try {
+      final response = await _dio.download(
+          _fileUrl,
+          savePath,
+          onReceiveProgress: _onReceiveProgress
+      );
+      result['isSuccess'] = response.statusCode == 200;
+      result['filePath'] = savePath;
+    } catch (ex) {
+      result['error'] = ex.toString();
+    } finally {
+      await _showNotification(result);
+    }
+  }
+
+  Future<void> _download() async {
+    final dir = await _getDownloadDirectory();
+    final isPermissionStatusGranted = await _requestPermissions();
+
+    if (isPermissionStatusGranted) {
+      final savePath = path.join(dir.path, _fileName);
+      await _startDownload(savePath);
+    } else {
+      // handle the scenario when user declines the permissions
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +179,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
     }
 
     String remarks;
-    String displayRmks;
-    if(args.officerRmks == null){
+    if(args.officerRmks == null && c1.text == ""){
       remarks = "No remarks added";
-      displayRmks = "No remarks added";
     }
     else{
       print(c1.text);
-      remarks = c1.text == "" ? args.officerRmks : c1.text;
+      setState(() {
+        remarks = c1.text == "" ? args.officerRmks : c1.text;
+      });
     }
 
     Size size = MediaQuery.of(context).size;
@@ -176,76 +303,92 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
 
                 SizedBox(height: 20,),
-                args.dmHere == false ? Container(
-                  decoration: BoxDecoration(
-                      color: Colors.cyan[200],
-                      borderRadius: BorderRadius.circular(12)
-                  ),
-                  child: FlatButton.icon(
-                      color: Colors.cyan[200],
-                      onPressed: (){
-                        showModalBottomSheet(
-                            context: context, builder: (context) => Container(
+                args.dmHere == false ? Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.cyan[200],
+                          borderRadius: BorderRadius.circular(12)
+                      ),
+                      child: FlatButton.icon(
+                        color: Colors.cyan[200],
+                        onPressed: (){
+                          showModalBottomSheet(
+                              context: context, builder: (context) => Container(
 
-                          color: Color(0xff757575),
-                          child: Container(
-                            padding: EdgeInsets.only(top: 40, left: 20, right: 20),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(20), topLeft: Radius.circular(20))),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  "add remarks",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 30,
-                                    color: Colors.grey[700],
-                                  ),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15, top: 10, right: 15, bottom: 10),
-                                    child: TextFormField(
-                                      controller: c1,
-                                      decoration: InputDecoration(border: InputBorder.none),
-                                      autofocus: true,
-                                      maxLines: 5,
-                                      textAlign: TextAlign.left,
+                            color: Color(0xff757575),
+                            child: Container(
+                              padding: EdgeInsets.only(top: 40, left: 20, right: 20),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(20), topLeft: Radius.circular(20))),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    "add remarks",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30,
+                                      color: Colors.grey[700],
                                     ),
                                   ),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: FlatButton.icon(
-                                      color: Colors.grey[200],
-                                      onPressed: () {
-                                        setState(() {
-                                          remarks = c1.text;
-                                          updateRemarks(remarks);
-                                        });
-                                        Provider.of<CaseProvider>(context,listen: false).setCase();
-                                        Provider.of<CaseProvider>(context,listen: false).setCase();
-                                        Navigator.pop(context);
-                                      },
-                                      icon: Icon(Icons.done),
-                                      label: Text("Submit")),
-                                ),
-                              ],
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[200],
+                                        borderRadius: BorderRadius.circular(20)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 15, top: 10, right: 15, bottom: 10),
+                                      child: TextFormField(
+                                        controller: c1,
+                                        decoration: InputDecoration(border: InputBorder.none),
+                                        autofocus: true,
+                                        maxLines: 5,
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: FlatButton.icon(
+                                        color: Colors.grey[200],
+                                        onPressed: () {
+                                          setState(() {
+                                            remarks = c1.text;
+                                            updateRemarks(remarks);
+                                          });
+                                          Provider.of<CaseProvider>(context,listen: false).setCase();
+                                          Provider.of<CaseProvider>(context,listen: false).setCase();
+                                          Navigator.pop(context);
+                                        },
+                                        icon: Icon(Icons.done),
+                                        label: Text("Submit")),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ));
-                      },
-                      icon: Icon(Icons.edit),
-                      label: Text("Remarks"),
-                  ),
+                          ));
+                        },
+                        icon: Icon(Icons.edit),
+                        label: Text("Remarks"),
+                      ),
+                    ),
+
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: FlatButton(
+                        onPressed: _download,
+                        child: Icon(Icons.download_sharp),
+                      ),
+                    ),
+
+                  ],
                 ) : Container(),
 
 

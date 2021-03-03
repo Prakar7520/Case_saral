@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+import 'package:ver2/Components/SplashScreen.dart';
 import 'package:ver2/Models/MyCaseList.dart';
+import 'package:ver2/Models/UserModel.dart';
 
 import '../Config.dart';
 
@@ -13,8 +15,8 @@ class CaseProvider with ChangeNotifier{
   String errormsg;
   List<MyCaseList> casesAll;
   List<MyCaseList> casesFinalAll;
-
-  List<String> graphDate;
+  List<UserModel> user;
+  String firstname;
 
   Future<List<MyCaseList>> fetchCase() async {
 
@@ -35,10 +37,46 @@ class CaseProvider with ChangeNotifier{
 
   }
 
+  Future<List<UserModel>> fetchUser() async {
+    var url = Config.userUrl;
+    var response = await http.get(url);
+    List<UserModel> users = [];
 
+    if (response.statusCode == 200) {
+      for (var note in jsonDecode(response.body)) {
+        users.add(UserModel.fromJson(note));
+      }
+    }
+    else {
+      print("Failed");
+      throw Exception("Failed to Load");
+    }
+    return users;
+  }
 
+  void setUser()async{
+    await fetchUser().then((value) => user = value);
+  }
 
+  String loggedInUsername(){
+    print(userLoggedIn);
+    if(user == null){
+      firstname = userLoggedIn;
+    }
+    else{
+      user.map((value) {
+        if(userLoggedIn == value.username){
+          firstname = value.firstname;
+        }
+      }).toList();
+    }
 
+    return firstname;
+  }
+
+  List<UserModel> getUser(){
+    return user;
+  }
 
   void setCase()async{
     await fetchCase().then((value) => casesAll = value);

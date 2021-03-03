@@ -28,7 +28,7 @@ class _DataInTableState extends State<DataInTable> {
     if(widget.caseId == 0 && widget.officerName == null){
       widget.cases.map((items) {
 
-        if(items.hearing_date == widget.dateSent && userLoggedIn == items.assign_to && items.valid == 1){
+        if(items.hearing_date == widget.dateSent && loggedUserDetail == items.assign_to && items.valid == 1){
           item.add(items);
         }
       }).toList();
@@ -43,7 +43,7 @@ class _DataInTableState extends State<DataInTable> {
     }
     else if(widget.dateSent == "none"){
       widget.cases.map((items) {
-        if(items.case_id == widget.caseId && userLoggedIn == items.assign_to && items.valid == 1){
+        if(items.case_id == widget.caseId && loggedUserDetail == items.assign_to && items.valid == 1){
           setState(() {
             item.add(items);
           });
@@ -53,7 +53,7 @@ class _DataInTableState extends State<DataInTable> {
 
     else{
       widget.cases.map((items) {
-        if(items.hearing_date == widget.dateSent && items.case_id == widget.caseId && userLoggedIn == items.assign_to && items.valid == 1){
+        if(items.hearing_date == widget.dateSent && items.case_id == widget.caseId && loggedUserDetail == items.assign_to && items.valid == 1){
           setState(() {
             item.add(items);
           });
@@ -141,7 +141,7 @@ class _DataInTable2State extends State<DataInTable2> {
     List<MyCaseList> item = [];
 
     widget.cases.map((items) {
-      if(items.hearing_date == widget.dateSent && items.assign_to == userLoggedIn && items.valid == 1){
+      if(items.hearing_date == widget.dateSent && items.assign_to == loggedUserDetail && items.valid == 1){
         item.add(items);
       }
     }).toList();

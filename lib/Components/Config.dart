@@ -7,5 +7,7 @@ class Config {
       'http://10.182.65.28/case';
   static String userUrl =
       'http://10.182.65.28/users';
+  static String downloadUrl =
+      'http://10.182.65.28/down';
 
 }

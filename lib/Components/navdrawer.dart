@@ -1,13 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ver2/Components/NotificationPlugin.dart';
 import 'package:ver2/Components/SplashScreen.dart';
 import 'package:ver2/Screens/DMHistory.dart';
-import 'package:ver2/Screens/FeedbackScreen.dart';
 import 'package:ver2/Screens/LoginScreen.dart';
 import 'package:ver2/Screens/WelcomeInstruction.dart';
 import 'package:ver2/main.dart';
+import 'package:ver2/Components/SettingPage.dart';
+import '../Screens/ReachUs.dart';
 
 class NavDrawer extends StatefulWidget {
   @override
@@ -30,7 +30,7 @@ class _NavDrawerState extends State<NavDrawer> {
               style: TextStyle(color: Colors.white, fontSize: 25),
             ),
             decoration: BoxDecoration(
-                color: Colors.black,
+              color: Colors.black,
 //                image: DecorationImage(
 //                    fit: BoxFit.fill,
 //                    image: AssetImage('assets/images/cover.jpg'))
@@ -38,7 +38,7 @@ class _NavDrawerState extends State<NavDrawer> {
           ),
           ListTile(
             leading: Icon(Icons.input),
-            title: Text('About'),
+            title: Text('Welcome'),
             onTap: () => {
               Navigator.pushNamed(context, WelcomeInstruction.id)
             },
@@ -53,12 +53,18 @@ class _NavDrawerState extends State<NavDrawer> {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => {
+              Navigator.pushNamed(context, SettingPage.id)
+            },
           ),
           ListTile(
             leading: Icon(Icons.border_color),
             title: Text('Feedback'),
-            onTap: () => {Navigator.pushNamed(context, FeedbackScreen.id)},
+            onTap: () => {Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ReachUS()),
+            )
+            },
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
@@ -69,7 +75,7 @@ class _NavDrawerState extends State<NavDrawer> {
                 sharedPreference.remove('LoggedUser');
               });
               RestartWidget.restartApp(context);
-              },
+            },
           ),
         ],
       ),

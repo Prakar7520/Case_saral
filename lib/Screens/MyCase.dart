@@ -16,10 +16,21 @@ class MyCase extends StatefulWidget {
 class _MyCaseState extends State<MyCase> {
   List<MyCaseList> graphDate = [];
   bool getData = false;
+  String firstName;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
     int count = 0;
     Size size = MediaQuery.of(context).size;
+    firstName = Provider.of<CaseProvider>(context).loggedInUsername();
     setState(() {
       try{
         graphDate = Provider.of<CaseProvider>(context,listen: false).getCase();
@@ -27,7 +38,7 @@ class _MyCaseState extends State<MyCase> {
           getData = true;
           String todayDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
           graphDate.map((value) {
-            if(value.assign_to == userLoggedIn && value.hearing_date == todayDate){
+            if(value.assign_to == loggedUserDetail && value.hearing_date == todayDate){
               setState(() {
                 count++;
               });
@@ -62,7 +73,7 @@ class _MyCaseState extends State<MyCase> {
                         userLoggedIn == 'SDM(E)' ? Text("SDM\n(E)") :
                         userLoggedIn == 'SDM(HQ)' ? Text('''SDM\n(HQ)''') : Text(""),
               ),
-              title: Text("$userLoggedIn",style: TextStyle(fontSize: 24),),
+              title: Text("$firstName",style: TextStyle(fontSize: 24),),
               subtitle: Container(
                 margin: EdgeInsets.all(8),
                 child: Column(
