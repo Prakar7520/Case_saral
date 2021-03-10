@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ver2/Models/DetailScreenArgument.dart';
 
 class AddRemarks extends StatelessWidget {
   static String id = "AddRemarks";

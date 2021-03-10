@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 String userLoggedIn;
 String loggedUserDetail;
+String dataAssignedTo;
 bool toogleData;
 
 class SplashScreen extends StatefulWidget {
@@ -48,18 +49,23 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       userLoggedIn = obtainedUser;
       if(obtainedUser == "DM"){
+        dataAssignedTo = "District Magistrate";
         loggedUserDetail = "DM";
       }
       else if(obtainedUser == "ADCE"){
+        dataAssignedTo = "Additional District Magistrate(East)";
         loggedUserDetail = "ADC(E)";
       }
       else if(obtainedUser == "ADCHQ"){
+        dataAssignedTo = "Additional District Magistrate(HQ)";
         loggedUserDetail = "ADC(HQ)";
       }
       else if(obtainedUser == "SDME"){
+        dataAssignedTo = "Sub Divisional Magistrate(East)";
         loggedUserDetail = "SDM(E)";
       }
       else{
+        dataAssignedTo = "Sub Divisional Magistrate(HQ)";
         loggedUserDetail = "SDM(HQ)";
       }
     });
@@ -92,83 +98,85 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
 
-            SafeArea(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 80),
-                  child: Column(
-                    children: [
+            SingleChildScrollView(
+              child: SafeArea(
+                child: Center(
+                  child: Container(
+                    height: size.height,
+                    padding: const EdgeInsets.only(top: 80),
+                    child: Column(
+                      children: [
 
-                      Container(
-                        child: Image.asset("assets/govtofsikkim1.png"),
-                        height: 160,
-                        width: 160,
-                      ),
-
-                      Text("Government Of Sikkim", style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400
-                      ),),
-                      Text("CCMS",style: TextStyle(
-                        fontSize: 12,
-                      ),),
-
-                      SizedBox(height: 60,),
-
-                      Container(
-                        height: 80,
-                        width: 80,
-                        decoration:BoxDecoration(
-                          borderRadius: BorderRadius.circular(29),
-                          gradient: LinearGradient(
-
-                              colors: [Colors.lightBlueAccent,Colors.grey],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight
-                          ),),
-                        child: Center(
-                          child: FlatButton(
-                            onPressed: (){},
-                            child: Icon(Icons.book,size: 30,),
-                          ),
+                        Container(
+                          child: Image.asset("assets/govtofsikkim1.png"),
+                          height: 160,
+                          width: 160,
                         ),
-                      ),
 
-                      Text("""
-              Court Case
-      Management System"""),
+                        Text("Government Of Sikkim", style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400
+                        ),),
+                        Text("CCMS",style: TextStyle(
+                          fontSize: 12,
+                        ),),
 
-                      SizedBox(height: 20,),
+                        SizedBox(height: 60,),
 
-                      userLoggedIn == null ? Text("") : Text("$userLoggedIn"),
+                        Container(
+                          height: 80,
+                          width: 80,
+                          decoration:BoxDecoration(
+                            borderRadius: BorderRadius.circular(29),
+                            gradient: LinearGradient(
 
-                      Expanded(
-                        child: Align(
-                          alignment: FractionalOffset.bottomCenter,
-                          child: Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-
-                                Container(
-                                  child: Image.asset("assets/nicLogo.jpg"),
-                                  height: 100,
-                                  width: 100,
-                                ),
-
-                                Container(
-                                  child: Image.asset("assets/digital_india.png"),
-                                  height: 100,
-                                  width: 100,
-                                ),
-
-                              ],
+                                colors: [Colors.lightBlueAccent,Colors.grey],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight
+                            ),),
+                          child: Center(
+                            child: FlatButton(
+                              onPressed: (){},
+                              child: Icon(Icons.book,size: 30,),
                             ),
                           ),
                         ),
-                      )
 
-                    ],
+                        Text("""
+                Court Case
+      Management System"""),
+
+                        SizedBox(height: 20,),
+
+
+                        Expanded(
+                          child: Align(
+                            alignment: FractionalOffset.bottomCenter,
+                            child: Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+
+                                  Container(
+                                    child: Image.asset("assets/nicLogo.jpg"),
+                                    height: 100,
+                                    width: 100,
+                                  ),
+
+                                  Container(
+                                    child: Image.asset("assets/digital_india.png"),
+                                    height: 100,
+                                    width: 100,
+                                  ),
+
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -207,60 +215,64 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
 
-          SafeArea(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 80),
-                child: Column(
-                  children: [
+          SingleChildScrollView(
+            child: SafeArea(
+              child: Center(
+                child: Container(
+                  height: size.height,
+                  padding: const EdgeInsets.only(top: 80),
+                  child: Column(
+                    // mainAxisSize: MainAxisSize.min,
+                    children: [
 
-                    Container(
-                      child: Image.asset("assets/govtofsikkim1.png"),
-                      height: 160,
-                      width: 160,
-                    ),
+                      Container(
+                        child: Image.asset("assets/govtofsikkim1.png"),
+                        height: 160,
+                        width: 160,
+                      ),
 
-                    Text("Government Of Sikkim", style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400
-                    ),),
-                    Text("CCMS",style: TextStyle(
-                      fontSize: 12,
-                    ),),
+                      Text("Government Of Sikkim", style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400
+                      ),),
+                      Text("CCMS",style: TextStyle(
+                        fontSize: 12,
+                      ),),
 
-                    SizedBox(height: 60,),
+                      SizedBox(height: 60,),
 
-                    Spinner(),
-                    SizedBox(height: 12,),
-                    Text("$userLoggedIn",style: TextStyle(fontSize: 20),),
+                      Expanded(child: Spinner()),
+                      SizedBox(height: 12,),
+                      Text("$dataAssignedTo",style: TextStyle(fontSize: 20),),
 
-                    Expanded(
-                      child: Align(
-                        alignment: FractionalOffset.bottomCenter,
-                        child: Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
+                      Expanded(
+                        child: Align(
+                          alignment: FractionalOffset.bottomCenter,
+                          child: Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
 
-                              Container(
-                                child: Image.asset("assets/nicLogo.jpg"),
-                                height: 100,
-                                width: 100,
-                              ),
+                                Container(
+                                  child: Image.asset("assets/nicLogo.jpg"),
+                                  height: 100,
+                                  width: 100,
+                                ),
 
-                              Container(
-                                child: Image.asset("assets/digital_india.png"),
-                                height: 100,
-                                width: 100,
-                              ),
+                                Container(
+                                  child: Image.asset("assets/digital_india.png"),
+                                  height: 100,
+                                  width: 100,
+                                ),
 
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    )
+                      )
 
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

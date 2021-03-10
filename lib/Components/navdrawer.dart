@@ -36,13 +36,7 @@ class _NavDrawerState extends State<NavDrawer> {
 //                    image: AssetImage('assets/images/cover.jpg'))
             ),
           ),
-          ListTile(
-            leading: Icon(Icons.input),
-            title: Text('Welcome'),
-            onTap: () => {
-              Navigator.pushNamed(context, WelcomeInstruction.id)
-            },
-          ),
+
           userLoggedIn == "DM" ? ListTile(
             leading: Icon(Icons.history),
             title: Text("Officer's Cases"),
@@ -64,6 +58,13 @@ class _NavDrawerState extends State<NavDrawer> {
               context,
               MaterialPageRoute(builder: (context) => ReachUS()),
             )
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.input),
+            title: Text('About'),
+            onTap: () => {
+              Navigator.pushNamed(context, WelcomeInstruction.id)
             },
           ),
           ListTile(

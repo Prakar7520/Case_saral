@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -66,12 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
           debugShowCheckedModeBanner: false,
           home: Scaffold(
               backgroundColor: Colors.blueAccent[100],
-              appBar: AppBar(
-                backgroundColor: Colors.blue[700],
-                title: Text(
-                  'CCMS',
-                ),
-              ),
+
               body: LayoutBuilder(
                 builder:
                     (BuildContext context, BoxConstraints viewportConstraints) {
@@ -96,31 +90,30 @@ class _LoginScreenState extends State<LoginScreen> {
                                     .size
                                     .height * 0.30,
                                 child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      CircleAvatar(
-                                        backgroundColor:
-                                        Theme
-                                            .of(context)
-                                            .accentColor,
-                                        radius: 40,
-                                        child: Icon(
-                                          Icons.person,
-                                          size: 50,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(height: 30,),
+                                        Container(
+                                          child: Image.asset("assets/CaseSaralText.png"),
+                                          height: 100,
+                                          width: 200,
                                         ),
-                                      ),
-                                      Text(
-                                        'Login',
-                                        style: TextStyle(
-                                          fontSize: 30,
-                                          color: Colors.white,
+                                        Text(
+                                          'Login',
+                                          style: TextStyle(
+                                            fontSize: 30,
+                                            color: Colors.black54,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
+
+
                               Expanded(
                                   child: Container(
                                     padding: EdgeInsets.all(30),
@@ -211,17 +204,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                                                 try{
                                                   if(widget.user != null){
-                                                  for(var ur in widget.user){
-                                                    if(con1 == ur.username && _password.text == ur.password){
-                                                      sharedPreferences.setString('LoggedUser', ur.username);
-                                                      RestartWidget.restartApp(context);
-                                                      Navigator.pushReplacement(context, MaterialPageRoute(
-                                                          builder: (context) => StartPage()
-                                                      ));
-                                                      break;
+                                                    for(var ur in widget.user){
+                                                      if(con1 == ur.username && _password.text == ur.password){
+                                                        sharedPreferences.setString('LoggedUser', ur.username);
+                                                        RestartWidget.restartApp(context);
+                                                        Navigator.pushReplacement(context, MaterialPageRoute(
+                                                            builder: (context) => StartPage()
+                                                        ));
+                                                        break;
+                                                      }
                                                     }
                                                   }
-                                                }
                                                   if(widget.user == null){
                                                     setState(() {
 
@@ -270,23 +263,23 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ],
                                         ),
                                         SizedBox(height: 30,),
-                                    RichText(
-                                      text: TextSpan(
-                                        text: 'For any help, please contact ',
-                                        style: DefaultTextStyle.of(context).style,
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text: ' 7318718159',
-                                              style: TextStyle(color: Colors.blue),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                setState(() {
-                                                  _makePhoneCall('tel:7318718159');
-                                                });
-                                                }),
-                                        ],
-                                      ),
-                                    )
+                                        RichText(
+                                          text: TextSpan(
+                                            text: 'For any help, please contact ',
+                                            style: DefaultTextStyle.of(context).style,
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text: ' 9910788993',
+                                                  style: TextStyle(color: Colors.blue),
+                                                  recognizer: TapGestureRecognizer()
+                                                    ..onTap = () {
+                                                      setState(() {
+                                                        _makePhoneCall('tel:9910788993');
+                                                      });
+                                                    }),
+                                            ],
+                                          ),
+                                        )
                                       ],
                                     ),
                                   )

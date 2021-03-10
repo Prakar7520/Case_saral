@@ -29,7 +29,7 @@ class _ReachUsState extends State<ReachUs> {
 
   _launchURLMail() async {
     const url =
-        'dio@nic.in';
+        'mailto:dio-edt@nic.in';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -163,7 +163,7 @@ class _ReachUsState extends State<ReachUs> {
                     t1.clear();
                     t2.clear();
                     launchUrl(
-                        "anirola812@gmail.com?subject=From $name&body=$message");
+                        "dio-edt@nic.in?subject=From $name&body=$message");
                   });
                 },
                 child: ListTile(
@@ -215,18 +215,6 @@ class _ReachUsState extends State<ReachUs> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () => launchUrl(
-                      "githuburl"),
-                  child: Icon(
-                    FontAwesomeIcons.github,
-                    color: Colors.orange,
-                    size: 35,
-                  ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.06,
-                ),
-                GestureDetector(
-                  onTap: () => launchUrl(
                       "Playstoreurl"),
                   child: Icon(FontAwesomeIcons.googlePlay,
                       color: Color(0xfffb3958), size: 35),
@@ -236,8 +224,8 @@ class _ReachUsState extends State<ReachUs> {
                 ),
                 GestureDetector(
                   onTap: () => _launchURLMail(),
-                  child: Icon(FontAwesomeIcons.at,
-                      color: Color(0xff1DA1F2), size: 35),
+                  child: Icon(Icons.mail_outline,
+                      color: Color(0xff1DA1F2), size: 45),
                 ),
               ],
             ),

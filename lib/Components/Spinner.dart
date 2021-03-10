@@ -9,7 +9,7 @@ class Spinner extends StatelessWidget {
     return Container(
 
       child: Center(
-        child: SpinKitChasingDots(
+        child: SpinKitWave(
           color: Colors.white,
           size: 100,
         ),

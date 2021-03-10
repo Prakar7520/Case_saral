@@ -40,26 +40,20 @@ class _CaseStatusState extends State<CaseStatus> {
               children: [
                 Row(
                   children: [
-                    StatusContainer(child: Image.asset("assets/blue_dot.png"),),
-                    Text("Completed",style: TextStyle(fontSize: 16),),
-                  ],
-                ),
-                Row(
-                  children: [
                     StatusContainer(child: Image.asset("assets/green_dot.png"),),
-                    Text("In progress",style: TextStyle(fontSize: 16),),
+                    Text(" In progress",style: TextStyle(fontSize: 16),),
                   ],
                 ),
 
                 Row(
                   children: [
                     StatusContainer(child: Image.asset("assets/yellow_dot.png"),),
-                    Text("Pending",style: TextStyle(fontSize: 16),),
+                    Text(" Pending",style: TextStyle(fontSize: 16),),
                   ],
                 ),Row(
                   children: [
                     StatusContainer(child: Image.asset("assets/red_dot.png"),),
-                    Text("Disposed",style: TextStyle(fontSize: 16),),
+                    Text(" Disposed",style: TextStyle(fontSize: 16),),
                   ],
                 ),
               ],

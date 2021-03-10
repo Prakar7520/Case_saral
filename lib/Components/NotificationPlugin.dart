@@ -1,10 +1,8 @@
-import 'dart:ffi';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io' show File, Platform;
-import 'package:http/http.dart' as http;
 
 import 'package:rxdart/subjects.dart';
 
@@ -63,38 +61,30 @@ class NotificationPlugin {
     });
   }
 
-  setOnNotificationClick(Function onNotificationClick) async {
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (String payload) async {
-          onNotificationClick(payload);
-        });
-  }
-
-  Future<void> showNotification() async {
-    var androidChannelSpecifics = AndroidNotificationDetails(
-      'CHANNEL_ID',
-      'CHANNEL_NAME',
-      "CHANNEL_DESCRIPTION",
-      importance: Importance.Max,
+  Future<void> showNotification(Map<String, dynamic> downloadStatus) async {
+    final android = AndroidNotificationDetails(
+      'channel id',
+      'channel name',
+      'channel description',
       priority: Priority.High,
-      playSound: true,
-      timeoutAfter: 5000,
-      styleInformation: DefaultStyleInformation(true, true),
+      importance: Importance.Max,
     );
-    var iosChannelSpecifics = IOSNotificationDetails();
-    var platformChannelSpecifics =
-    NotificationDetails(androidChannelSpecifics, iosChannelSpecifics);
+    final iOS = IOSNotificationDetails();
+    final platform = NotificationDetails(android, iOS);
+    final json = jsonEncode(downloadStatus);
+    final isSuccess = downloadStatus['isSuccess'];
+
     await flutterLocalNotificationsPlugin.show(
-      0,
-      'Enabled Notification',
-      'You have enabled Notification!', //null
-      platformChannelSpecifics,
-      payload: 'New Payload',
+        0, // notification id
+        isSuccess ? 'Success' : 'Failure',
+        isSuccess ? 'File has been downloaded successfully!' : 'There was an error while downloading the file.',
+        platform,
+        payload: json
     );
   }
 
   Future<void> showDailyMorningAtTime() async {
-    var time = Time(12,35,0);
+    var time = Time(11,3,0);
     var androidChannelSpecifics = AndroidNotificationDetails(
       'CHANNEL_ID 4',
       'CHANNEL_NAME 4',
@@ -107,29 +97,7 @@ class NotificationPlugin {
     NotificationDetails(androidChannelSpecifics, iosChannelSpecifics);
     await flutterLocalNotificationsPlugin.showDailyAtTime(
       0,
-      'Good Morning Sir,',
-      'Click to View Today\'s Cases,', //null
-      time,
-      platformChannelSpecifics,
-      payload: 'Test Payload',
-    );
-  }
-
-  Future<void> showDailyEveningAtTime() async {
-    var time = Time(12,37,0);
-    var androidChannelSpecifics = AndroidNotificationDetails(
-      'CHANNEL_ID 4',
-      'CHANNEL_NAME 4',
-      "CHANNEL_DESCRIPTION 4",
-      importance: Importance.Max,
-      priority: Priority.High,
-    );
-    var iosChannelSpecifics = IOSNotificationDetails();
-    var platformChannelSpecifics =
-    NotificationDetails(androidChannelSpecifics, iosChannelSpecifics);
-    await flutterLocalNotificationsPlugin.showDailyAtTime(
-      0,
-      'Good Morning Sir,',
+      'Case Saral,',
       'Click to View Today\'s Cases,', //null
       time,
       platformChannelSpecifics,
@@ -161,5 +129,3 @@ class ReceivedNotification {
     @required this.payload,
   });
 }
-
-

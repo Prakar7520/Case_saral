@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:ver2/Components/SplashScreen.dart';
 import 'NotificationPlugin.dart';
-import 'package:ver2/Screens/NotificationScreen.dart';
-
 
 class SettingPage extends StatefulWidget {
   static String id = "SettingPage";
@@ -24,7 +23,16 @@ class _SettingPageState extends State<SettingPage> {
     getToogleData().whenComplete(() async => null);
     notificationPlugin
         .setListenerForLowerVersions(onNotificationInLowerVersions);
-    notificationPlugin.setOnNotificationClick(onNotificationClick);  }
+    // notificationPlugin.setOnNotificationClick(onNotificationClick);
+    }
+
+  Future<void> _makePhoneCall(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   Future getToogleData() async{
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -54,22 +62,18 @@ class _SettingPageState extends State<SettingPage> {
               title: 'Language',
               subtitle: 'English',
               leading: Icon(Icons.language),
-              onPressed: (context) {
-                Navigator.pop(context);
-              },
+              onPressed: (context) {},
             ),
-            SettingsTile(
-              title: 'Environment',
-              subtitle: 'Production',
-              leading: Icon(Icons.cloud_queue),
-            ),
+
           ],
         ),
         SettingsSection(
-          title: 'Account',
+          title: 'Our Contact',
           tiles: [
-            SettingsTile(title: 'Phone number', leading: Icon(Icons.phone)),
-            SettingsTile(title: 'Email', leading: Icon(Icons.email)),
+            SettingsTile(title: 'Phone number: 7318718159', leading: Icon(Icons.phone),onPressed: (context){
+              _makePhoneCall("tel: 7318718159");
+            },),
+            SettingsTile(title: 'Email:   something@gmail.com', leading: Icon(Icons.email)),
             SettingsTile(title: 'Sign out', leading: Icon(Icons.exit_to_app)),
           ],
         ),
@@ -87,13 +91,7 @@ class _SettingPageState extends State<SettingPage> {
                 });
               },
             ),
-            SettingsTile.switchTile(
-              enabled: notificationsEnabled,
-              title: 'Change password',
-              leading: Icon(Icons.lock),
-              switchValue: false,
-              onToggle: (bool value) {},
-            ),
+
             SettingsTile.switchTile(
 
               title: 'Enable Notifications',
@@ -110,10 +108,8 @@ class _SettingPageState extends State<SettingPage> {
                   enableNotification = toogleData;
                 });
                 if(enableNotification == notificationsEnabled) {
-                  // await notificationPlugin.showDailyMorningAtTime();
-                  // await notificationPlugin.showDailyEveningAtTime();
+
                   await notificationPlugin.showDailyMorningAtTime();
-                  await notificationPlugin.showDailyEveningAtTime();
                 }
               },
             ),

@@ -72,7 +72,7 @@ class _DataInTableState extends State<DataInTable> {
                 headingRowColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(167, 208, 251, 1)),
                 columns: <DataColumn>[
                   DataColumn(label: Text("Case ID",style: TextStyle(color: Colors.black),)),
-                  DataColumn(label: Text("Petionier",style: TextStyle(color: Colors.black),)),
+                  DataColumn(label: Text("Petitioner",style: TextStyle(color: Colors.black),)),
                   DataColumn(label: Text("Respondent",style: TextStyle(color: Colors.black),)),
                 ],
                 rows: item.map((rowItem) => DataRow(
@@ -90,7 +90,7 @@ class _DataInTableState extends State<DataInTable> {
                             hearingDate: rowItem.hearing_date,
                             officerRmks: rowItem.officer_rmks,
                             respondent: rowItem.respondent,
-                            peshkarRmks: rowItem.peshkarRmks,
+                            peshkarRmks: rowItem.peskhar_rmks,
                           dmHere: widget.dmHere,
                         ));
                       }
@@ -156,7 +156,7 @@ class _DataInTable2State extends State<DataInTable2> {
             headingRowColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(167, 208, 251, 1)),
             columns: <DataColumn>[
               DataColumn(label: Text("Case ID",style: TextStyle(color: Colors.black),)),
-              DataColumn(label: Text("Petionier",style: TextStyle(color: Colors.black),)),
+              DataColumn(label: Text("Petitioner",style: TextStyle(color: Colors.black),)),
               DataColumn(label: Text("Respondent",style: TextStyle(color: Colors.black),)),
               DataColumn(label: Text("Status",style: TextStyle(color: Colors.black),)),
             ],
@@ -174,7 +174,7 @@ class _DataInTable2State extends State<DataInTable2> {
                         hearingDate: rowItem.hearing_date,
                         officerRmks: rowItem.officer_rmks,
                         respondent: rowItem.respondent,
-                        peshkarRmks: rowItem.peshkarRmks
+                        peshkarRmks: rowItem.peskhar_rmks
                     ));
                   }
                 },
@@ -185,9 +185,7 @@ class _DataInTable2State extends State<DataInTable2> {
                   DataCell(Text(rowItem.case_id.toString())),
                   DataCell(Text(truncateString(rowItem.petitioner, 7))),
                   DataCell(Text(truncateString(rowItem.respondent, 7))),
-                  DataCell(rowItem.action == "Completed" ? StatusContainer(
-                    child: Image.asset("assets/blue_dot.png"),)
-                      : rowItem.action == "Inprogress" ? StatusContainer(
+                  DataCell(rowItem.action == "Inprogress" ? StatusContainer(
                     child: Image.asset("assets/green_dot.png"),)
                       : rowItem.action == "Pending" ? StatusContainer(
                     child: Image.asset("assets/yellow_dot.png"),)

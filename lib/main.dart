@@ -25,6 +25,7 @@ void main() async {
       ),
   );
 }
+
 class RestartWidget extends StatefulWidget {
   RestartWidget({this.child});
 

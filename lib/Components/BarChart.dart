@@ -16,7 +16,7 @@ class BarChart extends StatefulWidget {
 }
 
 class _BarChartState extends State<BarChart> {
-  List<Chart_Model> data = [];
+  // List<Chart_Model> data = [];
 
   String dateTwo = DateFormat('dd/MM/yyyy').format(DateTime.now().add(Duration(days: 1)));
   String dateThree = DateFormat('dd/MM/yyyy').format(DateTime.now().add(Duration(days: 2)));
@@ -34,10 +34,10 @@ class _BarChartState extends State<BarChart> {
     int count5 = 0;
 
     for(var item in widget.graphDate){
-      if(item.assign_to == loggedUserDetail ){
-        if(item.hearing_date == today || item.hearing_date == dateTwo || item.hearing_date == dateThree || item.hearing_date == dateFour || item.hearing_date == dateFive){
-          graphDateData.add(item.hearing_date);
-        }
+      if(item.assign_to == loggedUserDetail && item.valid == 1){
+          if(item.hearing_date == today || item.hearing_date == dateTwo || item.hearing_date == dateThree || item.hearing_date == dateFour || item.hearing_date == dateFive){
+            graphDateData.add(item.hearing_date);
+          }
       }
     }
 
@@ -99,7 +99,19 @@ class _BarChartState extends State<BarChart> {
         child: Column(
           children: [
             Text("Cases Per Day",style: TextStyle(fontWeight: FontWeight.bold)),
-            Expanded(child: charts.BarChart(series,animate: true,),),
+            Expanded(child: charts.BarChart(
+                                          series,
+                                          animate: true,
+                                          behaviors: [
+                                            charts.ChartTitle(
+                                              'number of cases',
+                                              layoutMinSize: 4,
+                                              behaviorPosition: charts.BehaviorPosition.start,
+                                              titleOutsideJustification: charts.OutsideJustification.middleDrawArea,
+                                            )
+                                          ],
+            ),
+            ),
             SizedBox(height: 10,),
             Text(DateFormat('MMMM').format(DateTime.now())),
             SizedBox(height: 8,)

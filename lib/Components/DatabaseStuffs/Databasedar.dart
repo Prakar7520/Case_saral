@@ -59,7 +59,6 @@ class CaseProvider with ChangeNotifier{
   }
 
   String loggedInUsername(){
-    print(userLoggedIn);
     if(user == null){
       firstname = userLoggedIn;
     }
@@ -78,12 +77,19 @@ class CaseProvider with ChangeNotifier{
     return user;
   }
 
-  void setCase()async{
+  void setCase()async {
+    print("refreshed");
     await fetchCase().then((value) => casesAll = value);
-    notifyListeners();
   }
 
   List<MyCaseList> getCase(){
+    // List<MyCaseList> caseFin = [];
+    // casesAll.map((e) {
+    //   if( e.valid == 1){
+    //     caseFin.add(e);
+    //   }
+    // }).toList();
+    // return caseFin;
     return casesAll;
   }
 

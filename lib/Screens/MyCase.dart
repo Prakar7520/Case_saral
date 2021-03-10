@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
 import 'package:ver2/Components/SplashScreen.dart';
-import 'package:ver2/Models/BarChart.dart';
+import 'file:///E:/FlutterApp/CCMS/case_saral/lib/Components/BarChart.dart';
 import 'package:flutter/material.dart';
 import 'package:ver2/Models/MyCaseList.dart';
 class MyCase extends StatefulWidget {
@@ -38,7 +38,7 @@ class _MyCaseState extends State<MyCase> {
           getData = true;
           String todayDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
           graphDate.map((value) {
-            if(value.assign_to == loggedUserDetail && value.hearing_date == todayDate){
+            if(value.assign_to == loggedUserDetail && value.hearing_date == todayDate && value.valid == 1){
               setState(() {
                 count++;
               });
@@ -67,11 +67,11 @@ class _MyCaseState extends State<MyCase> {
               leading: CircleAvatar(
                 radius: 32.0,
                 backgroundColor: Color.fromRGBO(167, 208, 251, 1),
-                child: userLoggedIn == 'DM' ? Text("DM") :
-                        userLoggedIn == 'ADC(E)' ? Text("ADC\n(E)") :
-                        userLoggedIn == 'ADC(HQ)' ? Text('''ADC\n(HQ)''') :
-                        userLoggedIn == 'SDM(E)' ? Text("SDM\n(E)") :
-                        userLoggedIn == 'SDM(HQ)' ? Text('''SDM\n(HQ)''') : Text(""),
+                child: loggedUserDetail == 'DM' ? Text("DM") :
+                      loggedUserDetail == 'ADC(E)' ? Text("ADC\n (E)") :
+                      loggedUserDetail == 'ADC(HQ)' ? Text('''ADC\n(HQ)''') :
+                      loggedUserDetail == 'SDM(E)' ? Text("SDM\n (E)") :
+                      loggedUserDetail == 'SDM(HQ)' ? Text('''SDM\n(HQ)''') : Text(""),
               ),
               title: Text("$firstName",style: TextStyle(fontSize: 24),),
               subtitle: Container(

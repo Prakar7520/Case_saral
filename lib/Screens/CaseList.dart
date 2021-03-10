@@ -38,19 +38,20 @@ class _CaseListState extends State<CaseList> {
       if(cases != null){
         getData = true;
         cases.map((value) {
-          if(value.assign_to == loggedUserDetail){
+          if(value.assign_to == loggedUserDetail && value.valid == 1){
             if(value.hearing_date == DateFormat('dd/MM/yyyy').format(DateTime.now())){
               caseListToday.add(value);
             }
           }
         }).toList();
+
       }
 
     });
 
     return getData == true ? Scaffold(
       backgroundColor: Color.fromRGBO(255, 255, 255, .9),
-      body: caseListToday != [] ? Container(
+      body: caseListToday.length != 0 ? Container(
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,

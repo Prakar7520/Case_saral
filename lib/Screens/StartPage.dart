@@ -23,29 +23,30 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
   int _selectedIndex = 0;
 
   TabBar get _tabBar => TabBar(
-    indicatorColor: Colors.black,
+    indicatorColor: Colors.yellow,
 
     onTap: (index){
       //swipe is also a tap but now it isnt because of the controller
     },
     controller: _controller,
     tabs: list,
-    labelColor: Colors.black,
+    unselectedLabelColor: Colors.black,
+    labelColor: Colors.white,
   );
 
   List<Widget> list = [
     Tab(text: """
     My
-   Case""",icon: new Icon(MdiIcons.human,color: Colors.black)),
+   Case""",icon: new Icon(MdiIcons.human,)),
     Tab(text: """
     Case 
-   Search""",icon: new Icon(MdiIcons.briefcaseSearch,color: Colors.black)),
+   Search""",icon: new Icon(MdiIcons.briefcaseSearch,)),
     Tab(text: """
     Case 
-   Status""",icon: new Icon(MdiIcons.listStatus,color: Colors.black)),
+   Status""",icon: new Icon(MdiIcons.listStatus,)),
     Tab(text: """
     Case 
-     List""",icon: new Icon(MdiIcons.clipboardList,color: Colors.black)),
+     List""",icon: new Icon(MdiIcons.clipboardList,)),
   ];
 
   @override
@@ -62,26 +63,21 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
   Future getToogleData() async{
 
     if(toogleData == null){
-      print("its null");
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       sharedPreferences.setBool('notificationToogle', false);
     }
     else{
       if(toogleData == true){
-        print("hellofrom Strat");
-        // await notificationPlugin.showDailyMorningAtTime();
         await notificationPlugin.showDailyMorningAtTime();
-        print("1st here");
-        // await notificationPlugin.showDailyEveningAtTime();
-        await notificationPlugin.showDailyEveningAtTime();
-        print("1st here");
       }
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
+
+
+
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -95,7 +91,7 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
         floatingActionButton: Builder(
           builder: (context) => FloatingActionButton(
             child: Icon(Icons.refresh),
-            onPressed: (){
+            onPressed: () {
               setState(() {
                 Provider.of<CaseProvider>(context,listen: false).setCase();
                 Scaffold.of(context).showSnackBar(
@@ -125,7 +121,10 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
             preferredSize: _tabBar.preferredSize,
             child: ColoredBox(
               color:  Colors.lightBlue,
-                child: _tabBar
+                child: Material(
+                  color: Colors.blue,
+                  child: _tabBar,
+                )
             ),
           ),
         ),
