@@ -33,13 +33,20 @@ class _BarChartState extends State<BarChart> {
     int count4 = 0;
     int count5 = 0;
 
-    for(var item in widget.graphDate){
-      if(item.assign_to == loggedUserDetail && item.valid == 1){
+    if(widget.graphDate != null){
+      for(var item in widget.graphDate){
+        if(item.assign_to == loggedUserDetail && item.valid == 1){
           if(item.hearing_date == today || item.hearing_date == dateTwo || item.hearing_date == dateThree || item.hearing_date == dateFour || item.hearing_date == dateFive){
             graphDateData.add(item.hearing_date);
           }
+        }
       }
     }
+    else{
+      graphDateData = [];
+    }
+
+
 
     for(var value in graphDateData){
       if(value == DateFormat('dd/MM/yyyy').format(DateTime.now())){

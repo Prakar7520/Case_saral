@@ -19,18 +19,11 @@ class _MyCaseState extends State<MyCase> {
   String firstName;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-
-  }
-
-  @override
   Widget build(BuildContext context) {
     int count = 0;
     Size size = MediaQuery.of(context).size;
     firstName = Provider.of<CaseProvider>(context).loggedInUsername();
+    print(firstName);
     setState(() {
       try{
         graphDate = Provider.of<CaseProvider>(context,listen: false).getCase();
@@ -45,6 +38,9 @@ class _MyCaseState extends State<MyCase> {
             }
           }).toList();
         }
+        // else{
+        //   graphDate = [];
+        // }
       }
       catch(e){
         print("");

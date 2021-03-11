@@ -88,6 +88,7 @@ class _DMHistoryState extends State<DMHistory> {
                           ),
                             icon: GestureDetector(
                                 onTap: (){
+                                  print("tapped");
                                   if(text1 == ""){
                                     setState(() {
                                       caseId = 0;
@@ -125,33 +126,32 @@ class _DMHistoryState extends State<DMHistory> {
 
                   ],
                 ),
-                DropdownButton<String>(
-                  elevation: 12,
-                  value: _selectedChoice,
-                  onChanged: (value){
-                    setState(() {
-                      _selectedChoice = value;
-                      officerName = _selectedChoice;
-                      // if(_selectedChoice == "ADC(E)"){
-                      //   officerName = "ADCE";
-                      // }
-                      // else if(_selectedChoice == "ADC(HQ)"){
-                      //   officerName = "ADCHQ";
-                      // }
-                      // else if(_selectedChoice == "SDM(E)"){
-                      //   officerName ="SDME";
-                      // }
-                      // else{
-                      //   officerName = "SDMHQ";
-                      // }
-                    });
-                  },
-                  items: _choice.map<DropdownMenuItem<String>>((value){
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+                SizedBox(height: 3,),
+                Container(
+                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                      color: Colors.grey[300],
+                  ),
+
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      elevation: 12,
+                      value: _selectedChoice,
+                      onChanged: (value){
+                        setState(() {
+                          _selectedChoice = value;
+                          officerName = _selectedChoice;
+                        });
+                      },
+                      items: _choice.map<DropdownMenuItem<String>>((value){
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
 
                 Center(child: getData == true ? SingleChildScrollView(

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ver2/Components/NotificationPlugin.dart';
 import 'package:ver2/Components/SplashScreen.dart';
 import 'package:ver2/Screens/DMHistory.dart';
-import 'package:ver2/Screens/LoginScreen.dart';
 import 'package:ver2/Screens/WelcomeInstruction.dart';
 import 'package:ver2/main.dart';
 import 'package:ver2/Components/SettingPage.dart';

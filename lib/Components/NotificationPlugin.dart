@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'dart:io' show File, Platform;
+import 'dart:io' show  Platform;
 
 import 'package:rxdart/subjects.dart';
 
@@ -84,7 +84,7 @@ class NotificationPlugin {
   }
 
   Future<void> showDailyMorningAtTime() async {
-    var time = Time(11,3,0);
+    var time = Time(9,30,0);
     var androidChannelSpecifics = AndroidNotificationDetails(
       'CHANNEL_ID 4',
       'CHANNEL_NAME 4',

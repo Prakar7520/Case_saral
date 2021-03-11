@@ -17,10 +17,7 @@ class _CaseListState extends State<CaseList> {
   //Swipe to Refresh
   Color gradientStart = Colors.white10;
   Color gradientEnd = Color.fromRGBO(201, 226, 252, 1);
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-  GlobalKey<RefreshIndicatorState>();
-
-  List<MyCaseList> cases = [];
+    List<MyCaseList> cases = [];
 
 
   @override

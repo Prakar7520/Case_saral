@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 
+// ignore: camel_case_types
 class Chart_Model{
 
   final String days;

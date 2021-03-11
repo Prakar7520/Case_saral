@@ -33,6 +33,7 @@ class CaseProvider with ChangeNotifier{
     else{
       throw Exception("Failed to Load");
     }
+    notifyListeners();
     return cases;
 
   }
@@ -51,11 +52,13 @@ class CaseProvider with ChangeNotifier{
       print("Failed");
       throw Exception("Failed to Load");
     }
+    // notifyListeners();
     return users;
   }
 
   void setUser()async{
     await fetchUser().then((value) => user = value);
+    notifyListeners();
   }
 
   String loggedInUsername(){
@@ -78,18 +81,11 @@ class CaseProvider with ChangeNotifier{
   }
 
   void setCase()async {
-    print("refreshed");
     await fetchCase().then((value) => casesAll = value);
+    notifyListeners();
   }
 
   List<MyCaseList> getCase(){
-    // List<MyCaseList> caseFin = [];
-    // casesAll.map((e) {
-    //   if( e.valid == 1){
-    //     caseFin.add(e);
-    //   }
-    // }).toList();
-    // return caseFin;
     return casesAll;
   }
 
@@ -101,6 +97,7 @@ class CaseProvider with ChangeNotifier{
       }
 
     }).toList();
+    notifyListeners();
     return todayCase;
   }
 
@@ -116,7 +113,7 @@ class CaseProvider with ChangeNotifier{
       }
 
     }).toList();
-
+    notifyListeners();
     return caseListToday;
 
   }

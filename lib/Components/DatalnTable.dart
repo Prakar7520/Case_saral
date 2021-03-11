@@ -33,14 +33,24 @@ class _DataInTableState extends State<DataInTable> {
         }
       }).toList();
     }
-    else if(widget.officerName != null){
+    else if(widget.officerName != null && widget.caseId != 0){
       widget.cases.map((items) {
 
-        if(items.hearing_date == widget.dateSent && items.assign_to == widget.officerName && items.valid == 1){
+        if(items.hearing_date == widget.dateSent && items.assign_to == widget.officerName && items.valid == 1 && widget.caseId == items.case_id.toInt()){
           item.add(items);
         }
       }).toList();
     }
+    else if(widget.officerName != null){
+      print(widget.caseId);
+      widget.cases.map((items) {
+
+        if(items.hearing_date == widget.dateSent && items.assign_to == widget.officerName && items.valid == 1 ){
+          item.add(items);
+        }
+      }).toList();
+    }
+
     else if(widget.dateSent == "none"){
       widget.cases.map((items) {
         if(items.case_id == widget.caseId && loggedUserDetail == items.assign_to && items.valid == 1){

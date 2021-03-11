@@ -53,11 +53,11 @@ class _SplashScreenState extends State<SplashScreen> {
         loggedUserDetail = "DM";
       }
       else if(obtainedUser == "ADCE"){
-        dataAssignedTo = "Additional District Magistrate(East)";
+        dataAssignedTo = "Additional District Collector(East)";
         loggedUserDetail = "ADC(E)";
       }
       else if(obtainedUser == "ADCHQ"){
-        dataAssignedTo = "Additional District Magistrate(HQ)";
+        dataAssignedTo = "Additional District Collector(HQ)";
         loggedUserDetail = "ADC(HQ)";
       }
       else if(obtainedUser == "SDME"){
@@ -124,27 +124,17 @@ class _SplashScreenState extends State<SplashScreen> {
                         SizedBox(height: 60,),
 
                         Container(
-                          height: 80,
-                          width: 80,
-                          decoration:BoxDecoration(
-                            borderRadius: BorderRadius.circular(29),
-                            gradient: LinearGradient(
-
-                                colors: [Colors.lightBlueAccent,Colors.grey],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight
-                            ),),
-                          child: Center(
-                            child: FlatButton(
-                              onPressed: (){},
-                              child: Icon(Icons.book,size: 30,),
-                            ),
-                          ),
+                          height: 150,
+                          width: 100,
+                          child: Image.asset("assets/applogo.png"),
                         ),
 
-                        Text("""
-                Court Case
-      Management System"""),
+                        Center(
+                          child: Text("Court Case"),
+                        ),
+                        Center(
+                          child: Text("  Management System"),
+                        ),
 
                         SizedBox(height: 20,),
 
@@ -185,22 +175,6 @@ class _SplashScreenState extends State<SplashScreen> {
           ],
         ),
       ):
-    // Scaffold(
-    //   backgroundColor: Colors.lightBlueAccent,
-    //   body: SingleChildScrollView(
-    //     child: SafeArea(
-    //       child: Column(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         crossAxisAlignment: CrossAxisAlignment.stretch,
-    //         children: [
-    //
-    //           Spinner(),
-    //
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
 
     Scaffold(
       body: Stack(

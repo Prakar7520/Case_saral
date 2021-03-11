@@ -131,6 +131,19 @@ class _CaseSearchScreenState extends State<CaseSearchScreen> {
                 ],
               ) : Container(
                 child: TextFieldContainer(child: TextFormField(
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (term){
+                    if(text2 == ""){
+                      setState(() {
+                        caseId1 = 0;
+                      });
+                    }
+                    else{
+                      setState(() {
+                        caseId1 = int.parse(text2);
+                      });
+                    }
+                  },
                   keyboardType: TextInputType.number,
                   onChanged: (value){
                     setState(() {

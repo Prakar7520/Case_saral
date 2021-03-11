@@ -17,10 +17,11 @@ import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+// ignore: must_be_immutable
 class DetailsScreen extends StatefulWidget {
 
   static String id = "DetailsPage";
-  bool updated = null;
+  bool updated;
 
   @override
   _DetailsScreenState createState() => _DetailsScreenState();
@@ -32,13 +33,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String pskRemarks = "";
     final DetailScreenArgument args = ModalRoute.of(context).settings.arguments;
-    if(args.peshkarRmks == null){
-      setState(() {
-        pskRemarks = "No Peshkar Remark";
-      });
-    }
+
 
     final String _fileUrl = Config.downloadUrl+"/"+args.caseId.toString();
     final String _fileName = "downloadPdf.pdf";
@@ -53,11 +49,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
     String progress = "-";
 
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-
-    @override
-    void initState() {
-      super.initState();
-    }
 
     Future<void> _onSelectNotification(String json) async {
       final obj = jsonDecode(json);
@@ -147,7 +138,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
         }
       } catch (ex) {
         return _popupDialog(context);
-        result['error'] = ex.toString();
       }
     }
 
@@ -166,7 +156,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       }
     }
 
-    Future<MyCaseList> updateRemarks(String officer_rmks) async{
+    Future<MyCaseList> updateRemarks(String officerRmks) async{
       String x = args.serialNo.toString();//assign args.serial_no = x.toString here for testing i used 3
       var url=Config.apiUrl+"/"+x;
       final http.Response response = await http.patch(url,
@@ -174,7 +164,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'officer_rmks': officer_rmks,
+          'officer_rmks': officerRmks,
         }),
       );
       if (response.statusCode == 200) {
@@ -312,10 +302,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
 
                 SizedBox(height: 20,),
-                args.dmHere == false ? Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
+                    args.dmHere == false ? Container(
                       decoration: BoxDecoration(
                           color: Colors.cyan[200],
                           borderRadius: BorderRadius.circular(12)
@@ -371,11 +361,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                         color: Colors.grey[200],
                                         onPressed: () {
                                           setState(() {
+                                            Provider.of<CaseProvider>(context,listen: false).setCase();
                                             remarks = c1.text;
                                             updateRemarks(remarks);
                                           });
-                                          Provider.of<CaseProvider>(context,listen: false).setCase();
-                                          Provider.of<CaseProvider>(context,listen: false).setCase();
                                           Navigator.pop(context);
                                         },
                                         icon: Icon(Icons.done),
@@ -389,6 +378,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         icon: Icon(Icons.edit),
                         label: Text("Remarks"),
                       ),
+                    ) : Container(
+                      width: size.width * 0.5,
                     ),
 
                     Container(
@@ -403,7 +394,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ),
 
                   ],
-                ) : Container(),
+                ),
 
 
               ],
@@ -420,23 +411,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
           return AlertDialog(
             title: Text('Failed to Downoad'),
             content: Text('PDF on this Case ID doesn\'t exist'),
-            actions: <Widget>[
-              FlatButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text('OK')),
-
-            ],
-          );
-        });
-  }
-
-  void _popupDialogFail(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Fail'),
-            content: Text('on Updation'),
             actions: <Widget>[
               FlatButton(
                   onPressed: () => Navigator.of(context).pop(),

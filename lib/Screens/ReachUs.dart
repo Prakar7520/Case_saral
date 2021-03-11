@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ReachUS extends StatelessWidget {
-  String id = "ReachUs";
+  static String id = "ReachUs";
   @override
   Widget build(BuildContext context) {
     return ReachUs();

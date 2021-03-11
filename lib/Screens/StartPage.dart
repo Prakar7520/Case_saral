@@ -20,7 +20,7 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> with SingleTickerProviderStateMixin{
   TabController _controller;
-  int _selectedIndex = 0;
+  // int _selectedIndex = 0;
 
   TabBar get _tabBar => TabBar(
     indicatorColor: Colors.yellow,
@@ -54,9 +54,9 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
     // TODO: implement initState
     super.initState();
     _controller = TabController(length: list.length, vsync: this);
-    _controller.addListener(() {
-      _selectedIndex = _controller.index;
-    });
+    // _controller.addListener(() {
+    //   _selectedIndex = _controller.index;
+    // });
     getToogleData().whenComplete(() async=> null);
   }
 
@@ -100,14 +100,14 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
                       backgroundColor: Colors.blueAccent,
                     )
                 );
-                Provider.of<CaseProvider>(context,listen: false).setCase();
+
               });
             },
           ),
         ),
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black),
-          backgroundColor: Colors.lightBlue[700],
+          backgroundColor: Color.fromRGBO(20, 78, 188, 1),
           actions: [
 
             Image.asset("assets/scaleIMG.png",fit: BoxFit.cover,height: 35,)
@@ -122,7 +122,7 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
             child: ColoredBox(
               color:  Colors.lightBlue,
                 child: Material(
-                  color: Colors.blue,
+                  color: Color.fromRGBO(3, 127, 242, 1),
                   child: _tabBar,
                 )
             ),
