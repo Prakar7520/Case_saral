@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import '../../Services/Storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:ver2/Components/SplashScreen.dart';
 import 'package:ver2/Models/MyCaseList.dart';
 import 'package:ver2/Models/UserModel.dart';
+import 'package:ver2/Services/Storage.dart';
 
 import '../Config.dart';
 
@@ -14,14 +16,24 @@ class CaseProvider with ChangeNotifier{
   MyCaseList caseList;
   String errormsg;
   List<MyCaseList> casesAll;
+  List<MyCaseList> casesAllDateSearch;
   List<MyCaseList> casesFinalAll;
+  List<MyCaseList> officerCasesAll;
+  List<MyCaseList> casesIDSearch;
   List<UserModel> user;
   String firstname;
 
-  Future<List<MyCaseList>> fetchCase() async {
+  var sss = SecureStorage();
+  var url;
+  var token;
 
-    var url = Config.apiUrl;
-    var response = await http.get(url);
+  Future<List<MyCaseList>> fetchCase() async {
+    token= await sss.readSecureData('token');
+    url = 'http://10.182.65.28/caseassign/${loggedUserDetail}';
+    var response = await http.get(url, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'token': token,
+    },);
     List<MyCaseList> cases = [];
 
     if(response.statusCode == 200){
@@ -38,28 +50,124 @@ class CaseProvider with ChangeNotifier{
 
   }
 
-  Future<List<UserModel>> fetchUser() async {
-    var url = Config.userUrl;
-    var response = await http.get(url);
-    List<UserModel> users = [];
+  Future<List<MyCaseList>> fetchCaseDateSearch(String date) async {
+    token= await sss.readSecureData('token');
+    print(token);
+    url ="http://10.182.65.28/casedate/$date";
+    var response = await http.get(url, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'token': token,
+    },);
+    List<MyCaseList> cases = [];
 
-    if (response.statusCode == 200) {
-      for (var note in jsonDecode(response.body)) {
-        users.add(UserModel.fromJson(note));
+    if(response.statusCode == 200){
+
+      for(var note in jsonDecode(response.body)){
+        cases.add(MyCaseList.fromJson(note));
       }
     }
-    else {
-      print("Failed");
+    else{
       throw Exception("Failed to Load");
     }
-    // notifyListeners();
-    return users;
+    notifyListeners();
+    return cases;
+
   }
 
-  void setUser()async{
-    await fetchUser().then((value) => user = value);
+  Future<List<MyCaseList>> fetchOfficerCase(String officerName) async {
+    token= await sss.readSecureData('token');
+    url = 'http://10.182.65.28/caseassign/${officerName}';
+    var response = await http.get(url, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'token': token,
+    },);
+    List<MyCaseList> cases = [];
+
+    if(response.statusCode == 200){
+
+      for(var note in jsonDecode(response.body)){
+        cases.add(MyCaseList.fromJson(note));
+      }
+    }
+    else{
+      throw Exception("Failed to Load");
+    }
+    notifyListeners();
+    return cases;
+
+  }
+
+  Future<List<MyCaseList>> fetchCaseID(String caseID) async {
+    token= await sss.readSecureData('token');
+    url = 'http://10.182.65.28/caseid/${caseID}';
+    var response = await http.get(url, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'token': token,
+    },);
+    List<MyCaseList> cases = [];
+
+    if(response.statusCode == 200){
+
+      for(var note in jsonDecode(response.body)){
+        cases.add(MyCaseList.fromJson(note));
+      }
+    }
+    else{
+      throw Exception("Failed to Load");
+    }
+    notifyListeners();
+    return cases;
+
+  }
+  void setCaseID(String caseID)async {
+    await fetchCaseID(caseID).then((value) => casesIDSearch = value);
+//    notifyListeners();
+  }
+  List<MyCaseList> getCaseID() {
+    return casesIDSearch;
+  }
+
+
+
+
+
+
+
+
+
+  void setOfficerCase(String officerName)async {
+    await fetchOfficerCase(officerName).then((value) => officerCasesAll = value);
+//    notifyListeners();
+  }
+  List<MyCaseList> getOfficerCase() {
+    return officerCasesAll;
+  }
+
+
+
+
+
+
+
+  void setCase()async {
+    await fetchCase().then((value) => casesAll = value);
+
     notifyListeners();
   }
+  List<MyCaseList> getCase(){
+    return casesAll;
+  }
+
+
+
+  void setCaseDateSearch(String date)async {
+    await fetchCaseDateSearch(date).then((value) => casesAllDateSearch = value);
+    // notifyListeners();
+  }
+  List<MyCaseList> getCaseDateSearch() {
+    return casesAllDateSearch;
+  }
+
 
   String loggedInUsername(){
     if(user == null){
@@ -76,45 +184,4 @@ class CaseProvider with ChangeNotifier{
     return firstname;
   }
 
-  List<UserModel> getUser(){
-    return user;
-  }
-
-  void setCase()async {
-    await fetchCase().then((value) => casesAll = value);
-    notifyListeners();
-  }
-
-  List<MyCaseList> getCase(){
-    return casesAll;
-  }
-
-  List<MyCaseList> getTodayCase(){
-    List<MyCaseList> todayCase = [];
-    casesAll.map((item) {
-      if(item.hearing_date == DateFormat('dd/MM/yyyy').format(DateTime.now())){
-        todayCase.add(item);
-      }
-
-    }).toList();
-    notifyListeners();
-    return todayCase;
-  }
-
-  List<MyCaseList> getCaseDate(String date){
-
-    List<MyCaseList> caseListToday;
-    List<MyCaseList> casesAll = getCase();
-
-    casesAll.map((value) {
-
-      if(value.hearing_date == date){
-        caseListToday.add(value);
-      }
-
-    }).toList();
-    notifyListeners();
-    return caseListToday;
-
-  }
 }

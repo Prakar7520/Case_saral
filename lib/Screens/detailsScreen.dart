@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
 import 'package:ver2/Models/DetailScreenArgument.dart';
 import 'package:ver2/Models/MyCaseList.dart';
+import 'package:ver2/Services/Storage.dart';
 import '../Components/Config.dart';
 import 'package:dio/dio.dart';
 import 'package:path/path.dart' as path;
@@ -118,7 +119,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
     Future<void> _startDownload(String savePath) async {
 
-
       try {
         final response = await _dio.download(
           _fileUrl,
@@ -141,7 +141,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       }
     }
 
-    Future<void> _download() async {
+    Future<bool> _download() async {
 
 
       final dir = await _getDownloadDirectory();
@@ -317,60 +317,62 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               context: context, builder: (context) => Container(
 
                             color: Color(0xff757575),
-                            child: Container(
-                              padding: EdgeInsets.only(top: 40, left: 20, right: 20),
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.bottomRight,
-                                    end: Alignment.topLeft,
-                                    colors: [Colors.blueAccent,Colors.blueGrey]
-                                  ),
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(20), topLeft: Radius.circular(20))),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text(
-                                    "Add remarks",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30,
-                                      color: Colors.white,
+                            child: SingleChildScrollView(
+                              child: Container(
+                                padding: EdgeInsets.only(top: 40, left: 20, right: 20),
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.bottomRight,
+                                      end: Alignment.topLeft,
+                                      colors: [Colors.blueAccent,Colors.blueGrey]
                                     ),
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey[200],
-                                        borderRadius: BorderRadius.circular(20)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 15, top: 10, right: 15, bottom: 10),
-                                      child: TextFormField(
-                                        controller: c1,
-                                        decoration: InputDecoration(border: InputBorder.none),
-                                        autofocus: true,
-                                        maxLines: 3,
-                                        textAlign: TextAlign.left,
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(20), topLeft: Radius.circular(20))),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: [
+                                    Text(
+                                      "Add remarks",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 30,
+                                        color: Colors.white,
                                       ),
                                     ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: FlatButton.icon(
-                                        color: Colors.grey[200],
-                                        onPressed: () {
-                                          setState(() {
-                                            Provider.of<CaseProvider>(context,listen: false).setCase();
-                                            remarks = c1.text;
-                                            updateRemarks(remarks);
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        icon: Icon(Icons.done),
-                                        label: Text("Submit")),
-                                  ),
-                                ],
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey[200],
+                                          borderRadius: BorderRadius.circular(20)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15, top: 10, right: 15, bottom: 10),
+                                        child: TextFormField(
+                                          controller: c1,
+                                          decoration: InputDecoration(border: InputBorder.none),
+                                          autofocus: true,
+                                          maxLines: 3,
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: FlatButton.icon(
+                                          color: Colors.grey[200],
+                                          onPressed: () {
+                                            setState(() {
+                                              Provider.of<CaseProvider>(context,listen: false).setCase();
+                                              remarks = c1.text;
+                                              updateRemarks(remarks);
+                                            });
+                                            Navigator.pop(context);
+                                          },
+                                          icon: Icon(Icons.done),
+                                          label: Text("Submit")),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ));

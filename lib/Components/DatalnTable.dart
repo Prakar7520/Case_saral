@@ -1,3 +1,5 @@
+import 'package:provider/provider.dart';
+import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
 import 'package:ver2/Components/SplashScreen.dart';
 import 'package:ver2/Components/StatusContainer.dart';
 import 'package:ver2/Models/DetailScreenArgument.dart';
@@ -26,34 +28,75 @@ class _DataInTableState extends State<DataInTable> {
     List<MyCaseList> item = [];
 
     if(widget.caseId == 0 && widget.officerName == null){
+      print("vashfdsavdasdasd");
       widget.cases.map((items) {
 
-        if(items.hearing_date == widget.dateSent && loggedUserDetail == items.assign_to && items.valid == 1){
+        if(items.hearing_date == widget.dateSent && loggedUserDetail == items.assign_to){
           item.add(items);
         }
       }).toList();
     }
-    else if(widget.officerName != null && widget.caseId != 0){
+    else if(widget.caseId != 0 && widget.officerName == null){
+      print("wow");
       widget.cases.map((items) {
 
-        if(items.hearing_date == widget.dateSent && items.assign_to == widget.officerName && items.valid == 1 && widget.caseId == items.case_id.toInt()){
+        if(items.hearing_date == widget.dateSent && loggedUserDetail == items.assign_to && widget.caseId == items.case_id){
           item.add(items);
         }
       }).toList();
     }
+    else if(widget.dmHere == true && widget.dateSent != null && widget.officerName != null && widget.caseId == 0){
+      List<MyCaseList> caseDate = Provider.of<CaseProvider>(context).getCaseDateSearch();
+      caseDate == null ? print("wait") :
+      caseDate.map((items) {
+
+        if(widget.officerName == items.assign_to){
+          item.add(items);
+        }
+      }).toList();
+    }
+    else if(widget.dmHere == true && widget.dateSent != null && widget.officerName != null){
+      List<MyCaseList> caseDate = Provider.of<CaseProvider>(context).getCaseDateSearch();
+      caseDate == null ? print("wait") :
+      caseDate.map((items) {
+
+        if(widget.officerName == items.assign_to && widget.caseId == items.case_id){
+          item.add(items);
+        }
+      }).toList();
+    }
+    else if(widget.dateSent != 'none' && widget.officerName == null){
+      List<MyCaseList> caseDate = Provider.of<CaseProvider>(context).getCaseDateSearch();
+      caseDate.map((items) {
+
+        if(loggedUserDetail == items.assign_to){
+          item.add(items);
+        }
+      }).toList();
+    }
+//    else if(widget.officerName != null && widget.caseId != 0){
+//      widget.cases.map((items) {
+//
+//        if(items.hearing_date == widget.dateSent && items.assign_to == widget.officerName && widget.caseId == items.case_id.toInt()){
+//          item.add(items);
+//        }
+//      }).toList();
+//    }
     else if(widget.officerName != null){
-      print(widget.caseId);
-      widget.cases.map((items) {
+      List<MyCaseList> officerCase = Provider.of<CaseProvider>(context).getOfficerCase();
 
-        if(items.hearing_date == widget.dateSent && items.assign_to == widget.officerName && items.valid == 1 ){
+      officerCase.map((items) {
+
+        if(items.hearing_date == widget.dateSent && items.assign_to == widget.officerName ){
           item.add(items);
         }
       }).toList();
     }
 
     else if(widget.dateSent == "none"){
+      print("thkhhckasc");
       widget.cases.map((items) {
-        if(items.case_id == widget.caseId && loggedUserDetail == items.assign_to && items.valid == 1){
+        if(items.case_id == widget.caseId && loggedUserDetail == items.assign_to){
           setState(() {
             item.add(items);
           });
@@ -62,8 +105,9 @@ class _DataInTableState extends State<DataInTable> {
     }
 
     else{
+      List<MyCaseList> caseIDSearch = Provider.of<CaseProvider>(context).getCaseID();
       widget.cases.map((items) {
-        if(items.hearing_date == widget.dateSent && items.case_id == widget.caseId && loggedUserDetail == items.assign_to && items.valid == 1){
+        if(items.hearing_date == widget.dateSent && items.case_id == widget.caseId && loggedUserDetail == items.assign_to || items.valid == 1){//here also changed besuace i dont have valid
           setState(() {
             item.add(items);
           });
@@ -151,7 +195,7 @@ class _DataInTable2State extends State<DataInTable2> {
     List<MyCaseList> item = [];
 
     widget.cases.map((items) {
-      if(items.hearing_date == widget.dateSent && items.assign_to == loggedUserDetail && items.valid == 1){
+      if(items.hearing_date == widget.dateSent && items.assign_to == loggedUserDetail || items.valid == 1){//changed and to or
         item.add(items);
       }
     }).toList();

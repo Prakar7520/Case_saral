@@ -46,6 +46,9 @@ dependencies:
   downloads_path_provider_28: ^0.1.0
   permission_handler: ^4.4.0+hotfix.2
   dio: ^3.0.9
+  crypto: ^2.1.5
+  encrypt: ^4.1.0
+  flutter_secure_storage: ^4.1.0
 
 dev_dependencies:
   flutter_test:

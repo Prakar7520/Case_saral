@@ -18,13 +18,23 @@ class _DMHistoryState extends State<DMHistory> {
   String _selectedChoice = 'ADC(E)';
   String officerName = "ADC(E)";
   String dateNow = DateFormat('dd/MM/yyyy').format(DateTime.now());
+  String dateNowSearch = DateFormat('ddMMyyyy').format(DateTime.now());
   DateTime _selectedDate = DateTime.now();
   int tableChange = 0;
   int caseId = 0;
   int caseId1 = 0;
   List<MyCaseList> cases = List<MyCaseList>();
+  bool dmHere = false;
 
   String text1 = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<CaseProvider>(context,listen: false).setOfficerCase(officerName);
+
+  }
 
   void _presentDataPicker() {
     showDatePicker(
@@ -39,6 +49,9 @@ class _DMHistoryState extends State<DMHistory> {
       setState(() {
         _selectedDate = pickedDate;
         dateNow = DateFormat('dd/MM/yyyy').format(_selectedDate);
+        dateNowSearch = DateFormat('ddMMyyyy').format(_selectedDate);
+        dmHere = true;
+        Provider.of<CaseProvider>(context,listen: false).setCaseDateSearch(dateNowSearch);
       });
     });
 
@@ -49,7 +62,7 @@ class _DMHistoryState extends State<DMHistory> {
     Size size = MediaQuery.of(context).size;
     bool getData = false;
     setState(() {
-      cases = Provider.of<CaseProvider>(context).getCase();
+      cases = Provider.of<CaseProvider>(context,listen: false).getOfficerCase();
       if(cases != null){
         getData = true;
       }
@@ -74,6 +87,19 @@ class _DMHistoryState extends State<DMHistory> {
                           borderRadius: BorderRadius.only(topLeft: Radius.circular(12), bottomLeft: Radius.circular(12)),
                         ),
                         child: TextFormField(
+                          textInputAction: TextInputAction.done,
+                          onFieldSubmitted: (term){
+                            if(text1 == ""){
+                              setState(() {
+                                caseId1 = 0;
+                              });
+                            }
+                            else{
+                              setState(() {
+                                caseId1 = int.parse(text1);
+                              });
+                            }
+                          },
                           keyboardType: TextInputType.number,
                           onChanged: (value){
                             setState(() {
@@ -88,7 +114,6 @@ class _DMHistoryState extends State<DMHistory> {
                           ),
                             icon: GestureDetector(
                                 onTap: (){
-                                  print("tapped");
                                   if(text1 == ""){
                                     setState(() {
                                       caseId = 0;
@@ -142,6 +167,7 @@ class _DMHistoryState extends State<DMHistory> {
                         setState(() {
                           _selectedChoice = value;
                           officerName = _selectedChoice;
+                          Provider.of<CaseProvider>(context,listen: false).setOfficerCase(officerName);
                         });
                       },
                       items: _choice.map<DropdownMenuItem<String>>((value){
@@ -156,7 +182,7 @@ class _DMHistoryState extends State<DMHistory> {
 
                 Center(child: getData == true ? SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: DataInTable(dateSent: dateNow,caseId: caseId,cases: cases,officerName: officerName,dmHere: true,)
+                    child: DataInTable(dateSent: dateNow,caseId: caseId,cases: cases,officerName: officerName, dmHere: dmHere,)
                 ):Container(
                     height:size.height *0.8,
                     child: Center(child: Text("Error Connecting To NIC Network", style: TextStyle(fontWeight: FontWeight.bold),),)),
