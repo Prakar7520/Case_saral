@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ver2/Components/SplashScreen.dart';
 import 'package:ver2/Screens/DMHistory.dart';
@@ -6,6 +7,7 @@ import 'package:ver2/Screens/WelcomeInstruction.dart';
 import 'package:ver2/main.dart';
 import 'package:ver2/Components/SettingPage.dart';
 import '../Screens/ReachUs.dart';
+import 'DatabaseStuffs/Databasedar.dart';
 
 class NavDrawer extends StatefulWidget {
   @override

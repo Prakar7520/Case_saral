@@ -1,13 +1,21 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
+import 'package:ver2/Components/Config.dart';
+import 'package:ver2/Components/DatabaseStuffs/ApiResponse.dart';
+import 'package:ver2/Components/Spinner.dart';
 import 'package:ver2/Models/UserModel.dart';
 import 'package:ver2/Screens/StartPage.dart';
+import 'package:ver2/Services/Storage.dart';
 import 'package:ver2/main.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import '../Models/LoginModel.dart';
+
 
 
 Future<void> _makePhoneCall(String url) async {
@@ -42,6 +50,45 @@ class _LoginScreenState extends State<LoginScreen> {
   String con2 = "";
 
   List<String> graphDate;
+  Future<List<LoginModel>> loginUser( username, password) async  {
+    final SecureStorage ss = await SecureStorage();
+
+
+      var url1 ='http://10.182.65.28/mobilelogin';
+     // Map<String, String> headers = {"Content-type": "application/json"};
+      String json = '{"username": "$username", "password": "$password"}';
+      // make POST request
+      print(json);
+      Response response = await post(url1, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+          body: json);
+      print(username);
+      print(password);
+      //var v = await LoginModel.fromJson(jsonDecode(response.body));
+      //print(v);
+
+      print(response.statusCode);
+
+      if(response.statusCode == 201){
+        var x = jsonDecode(response.body);
+        print(x["token"]);
+        var tok=x["token"];
+        print(tok);
+        await ss.writeSecureData('token', tok);
+
+//        Navigator.pushReplacement(context, MaterialPageRoute(
+//            builder:  (context) => StartPage()));
+        RestartWidget.restartApp(context);
+      }
+      else{
+        Spinner();
+      }
+
+
+
+  }
+
 
   @override
   void initState() {
@@ -52,9 +99,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
 
-    Provider.of<CaseProvider>(context).setUser();
+
     Size size = MediaQuery.of(context).size;
-    widget.user = Provider.of<CaseProvider>(context,listen: false).getUser();
+
 
 
     return new Form(
@@ -121,6 +168,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               InputField(size: size, onPressed: (value){
                                 setState(() {
                                   con2 = value;
+
+
                                 });
                               }, text: 'Password', passwordOn: true, newIcons: Icon(Icons.lock),),
 
@@ -128,30 +177,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               Container(
                                 width: size.width * 0.5,
+                                // ignore: deprecated_member_use
                                 child: FlatButton(
                                   onPressed: () async{
                                     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                                     try{
-                                      if(widget.user != null){
-                                        for(var ur in widget.user){
-                                          if(con1 == ur.username && con2 == ur.password){
-                                            sharedPreferences.setString('LoggedUser', ur.username);
-                                            RestartWidget.restartApp(context);
-                                            Navigator.pushReplacement(context, MaterialPageRoute(
-                                                builder: (context) => StartPage()
-                                            ));
-                                            break;
-                                          }
-                                        }
+                                      //var b=EncryptPassword(con1);
+                                      if(loginUser(con1, con2) != null)
+                                      {
+                                        sharedPreferences.setString('LoggedUser',con1);
                                       }
-                                      if(widget.user == null){
-                                        setState(() {
-
-                                        });
-                                      }
-                                      if(userExist == false){
-                                        _popupDialog(context);
-                                      }
+                                      //print(a);
                                     }catch(e){
                                       print("Exception ");
                                     }
@@ -235,6 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
             title: Text('Invalid Login Credentials'),
             content: Text('Please Enter a valid username or password and also check if you are connected to NIC network'),
             actions: <Widget>[
+              // ignore: deprecated_member_use
               FlatButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text('OK')),
@@ -242,6 +279,24 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         });
   }
+
+//  EncryptPassword(String con1) {
+//    final key = Key.fromUtf8('mysupersecretkey!!!');
+//    final iv = IV.fromLength(16);
+//
+//    final b64key = Key.fromUtf8(base64Url.encode(key.bytes));
+//    // if you need to use the ttl feature, you'll need to use APIs in the algorithm itself
+//    final fernet = Fernet(b64key);
+//    final encrypter = Encrypter(fernet);
+//
+//    final encrypted = encrypter.encrypt(con1);
+//    final decrypted = encrypter.decrypt(encrypted);
+//
+//    print(decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
+//    print(encrypted.base64); // random cipher text
+//    print(fernet.extractTimestamp(encrypted.bytes));
+//    return encrypted.base64;// uqVowBXm36ZcCeN
+//  }
 }
 
 class InputField extends StatelessWidget {

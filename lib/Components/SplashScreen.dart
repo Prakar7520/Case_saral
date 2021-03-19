@@ -26,7 +26,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     Provider.of<CaseProvider>(context,listen: false).setCase();
-    Provider.of<CaseProvider>(context,listen: false).setUser();
     super.initState();
     getToogleData().whenComplete(() async=> null);
     getValidationData().whenComplete(() async{

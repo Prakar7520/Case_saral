@@ -35,7 +35,7 @@ class _BarChartState extends State<BarChart> {
 
     if(widget.graphDate != null){
       for(var item in widget.graphDate){
-        if(item.assign_to == loggedUserDetail && item.valid == 1){
+        if(item.assign_to == loggedUserDetail || item.valid == 1){//changed and to or for testing
           if(item.hearing_date == today || item.hearing_date == dateTwo || item.hearing_date == dateThree || item.hearing_date == dateFour || item.hearing_date == dateFive){
             graphDateData.add(item.hearing_date);
           }

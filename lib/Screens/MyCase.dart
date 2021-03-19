@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
 import 'package:ver2/Components/SplashScreen.dart';
-import 'file:///E:/FlutterApp/CCMS/case_saral/lib/Components/BarChart.dart';
+import '../Components/BarChart.dart';
 import 'package:flutter/material.dart';
 import 'package:ver2/Models/MyCaseList.dart';
 class MyCase extends StatefulWidget {
@@ -31,7 +31,7 @@ class _MyCaseState extends State<MyCase> {
           getData = true;
           String todayDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
           graphDate.map((value) {
-            if(value.assign_to == loggedUserDetail && value.hearing_date == todayDate && value.valid == 1){
+            if(value.assign_to == loggedUserDetail && value.hearing_date == todayDate){
               setState(() {
                 count++;
               });
@@ -69,7 +69,7 @@ class _MyCaseState extends State<MyCase> {
                       loggedUserDetail == 'SDM(E)' ? Text("SDM\n (E)") :
                       loggedUserDetail == 'SDM(HQ)' ? Text('''SDM\n(HQ)''') : Text(""),
               ),
-              title: Text("$firstName",style: TextStyle(fontSize: 24),),
+              title: Text("$dataAssignedTo",style: TextStyle(fontSize: 24),),
               subtitle: Container(
                 margin: EdgeInsets.all(8),
                 child: Column(

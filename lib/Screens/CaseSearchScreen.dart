@@ -19,10 +19,12 @@ class _CaseSearchScreenState extends State<CaseSearchScreen> {
   List<String> _choice = ['Date', 'Case_No'];
   String _selectedChoice = 'Date';
   String dateNow = DateFormat('dd/MM/yyyy').format(DateTime.now());
+  String dateNowSearch = DateFormat('ddMMyyyy').format(DateTime.now());
   DateTime _selectedDate = DateTime.now();
   int tableChange = 0;
   int caseId = 0;
   int caseId1 = 0;
+  // ignore: deprecated_member_use
   List<MyCaseList> cases = List<MyCaseList>();
 
   String text1 = "0";
@@ -42,6 +44,9 @@ class _CaseSearchScreenState extends State<CaseSearchScreen> {
       setState(() {
         _selectedDate = pickedDate;
         dateNow = DateFormat('dd/MM/yyyy').format(_selectedDate);
+        dateNowSearch = DateFormat('ddMMyyyy').format(_selectedDate);
+        Provider.of<CaseProvider>(context,listen: false).setCaseDateSearch(dateNowSearch);
+
       });
     });
 
@@ -141,6 +146,8 @@ class _CaseSearchScreenState extends State<CaseSearchScreen> {
                     else{
                       setState(() {
                         caseId1 = int.parse(text2);
+                        Provider.of<CaseProvider>(context,listen: false).setCaseID(caseId1.toString());
+                        print("enter");
                       });
                     }
                   },
@@ -165,6 +172,7 @@ class _CaseSearchScreenState extends State<CaseSearchScreen> {
                           else{
                             setState(() {
                               caseId1 = int.parse(text2);
+                              Provider.of<CaseProvider>(context,listen: false).setCaseID(text2);
                             });
                           }
                         },
@@ -198,7 +206,7 @@ class _CaseSearchScreenState extends State<CaseSearchScreen> {
 
           Center(child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: _selectedChoice == 'Date' ? DataInTable(dateSent: dateNow,caseId: caseId,cases: cases,dmHere: false,) : DataInTable(dateSent: "none",caseId: caseId1,cases: cases,dmHere: false,)
+              child: _selectedChoice == 'Date' ? DataInTable(dateSent: dateNow,caseId: caseId,cases: cases, dmHere: false,) : DataInTable(dateSent: "none",caseId: caseId1,cases: cases,dmHere: false,)
           )
           ),
 
