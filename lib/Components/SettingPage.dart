@@ -5,6 +5,16 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:ver2/Components/SplashScreen.dart';
 import 'NotificationPlugin.dart';
 
+Future<void> _launchURLMail() async {
+  const url =
+      'mailto:dio-edt@nic.in';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+
 class SettingPage extends StatefulWidget {
   static String id = "SettingPage";
 
@@ -70,10 +80,10 @@ class _SettingPageState extends State<SettingPage> {
         SettingsSection(
           title: 'Our Contact',
           tiles: [
-            SettingsTile(title: 'Phone number: 7318718159', leading: Icon(Icons.phone),onPressed: (context){
-              _makePhoneCall("tel: 7318718159");
+            SettingsTile(title: 'Phone number: 9910788993', leading: Icon(Icons.phone),onPressed: (context){
+              _makePhoneCall("tel: 9910788993");
             },),
-            SettingsTile(title: 'Email:   something@gmail.com', leading: Icon(Icons.email)),
+            SettingsTile(title: 'Email:   dio-edt@nic.in', leading: Icon(Icons.email),onTap: (){_launchURLMail();},),
             SettingsTile(title: 'Sign out', leading: Icon(Icons.exit_to_app)),
           ],
         ),

@@ -17,8 +17,9 @@ import 'package:http/http.dart' as http;
 import '../Models/LoginModel.dart';
 
 
-
-Future<void> _makePhoneCall(String url) async {
+Future<void> _launchURLMail() async {
+  const url =
+      'mailto:dio-edt@nic.in';
   if (await canLaunch(url)) {
     await launch(url);
   } else {
@@ -237,12 +238,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   style: DefaultTextStyle.of(context).style,
                                   children: <TextSpan>[
                                     TextSpan(
-                                        text: ' 9910788993',
+                                        text: ' dio-edit@nic.in',
                                         style: TextStyle(color: Colors.blue),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
                                             setState(() {
-                                              _makePhoneCall('tel:9910788993');
+                                              _launchURLMail();
                                             });
                                           }),
                                   ],
