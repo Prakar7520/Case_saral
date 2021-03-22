@@ -29,7 +29,9 @@ class _DataInTableState extends State<DataInTable> {
 
     if(widget.caseId == 0 && widget.officerName == null){
       print("vashfdsavdasdasd");
-      widget.cases.map((items) {
+      print(loggedUserDetail);
+      List<MyCaseList> caseDate = Provider.of<CaseProvider>(context).getCaseDateSearch();
+      caseDate.map((items) {
 
         if(items.hearing_date == widget.dateSent && loggedUserDetail == items.assign_to){
           item.add(items);
@@ -38,15 +40,17 @@ class _DataInTableState extends State<DataInTable> {
     }
     else if(widget.caseId != 0 && widget.officerName == null){
       print("wow");
-      widget.cases.map((items) {
+      List<MyCaseList> caseIDSearch = Provider.of<CaseProvider>(context).getCaseID();
+      caseIDSearch == null ? print("null") : caseIDSearch.map((items) {
 
-        if(items.hearing_date == widget.dateSent && loggedUserDetail == items.assign_to && widget.caseId == items.case_id){
+        if(/*items.hearing_date == widget.dateSent &&*/ loggedUserDetail == items.assign_to && widget.caseId == items.case_id){
           item.add(items);
         }
       }).toList();
     }
     else if(widget.dmHere == true && widget.dateSent != null && widget.officerName != null && widget.caseId == 0){
-      List<MyCaseList> caseDate = Provider.of<CaseProvider>(context).getCaseDateSearch();
+      print("dasd");
+      List<MyCaseList> caseDate = Provider.of<CaseProvider>(context).getDateAssign();
       caseDate == null ? print("wait") :
       caseDate.map((items) {
 
@@ -56,6 +60,7 @@ class _DataInTableState extends State<DataInTable> {
       }).toList();
     }
     else if(widget.dmHere == true && widget.dateSent != null && widget.officerName != null){
+      print("dasasdasdasdasdd");
       List<MyCaseList> caseDate = Provider.of<CaseProvider>(context).getCaseDateSearch();
       caseDate == null ? print("wait") :
       caseDate.map((items) {
@@ -66,6 +71,7 @@ class _DataInTableState extends State<DataInTable> {
       }).toList();
     }
     else if(widget.dateSent != 'none' && widget.officerName == null){
+      print("cdasdasdasdasdd");
       List<MyCaseList> caseDate = Provider.of<CaseProvider>(context).getCaseDateSearch();
       caseDate.map((items) {
 
@@ -83,7 +89,7 @@ class _DataInTableState extends State<DataInTable> {
 //      }).toList();
 //    }
     else if(widget.officerName != null){
-      List<MyCaseList> officerCase = Provider.of<CaseProvider>(context).getOfficerCase();
+      List<MyCaseList> officerCase = Provider.of<CaseProvider>(context).getDateAssign();
 
       officerCase.map((items) {
 
@@ -105,6 +111,7 @@ class _DataInTableState extends State<DataInTable> {
     }
 
     else{
+      print("hello");
       List<MyCaseList> caseIDSearch = Provider.of<CaseProvider>(context).getCaseID();
       widget.cases.map((items) {
         if(items.hearing_date == widget.dateSent && items.case_id == widget.caseId && loggedUserDetail == items.assign_to || items.valid == 1){//here also changed besuace i dont have valid

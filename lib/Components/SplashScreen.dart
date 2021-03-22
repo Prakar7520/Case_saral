@@ -26,6 +26,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     Provider.of<CaseProvider>(context,listen: false).setCase();
+    Provider.of<CaseProvider>(context,listen: false).setOfficerCase("ADC(E)");
+
     super.initState();
     getToogleData().whenComplete(() async=> null);
     getValidationData().whenComplete(() async{
@@ -51,15 +53,15 @@ class _SplashScreenState extends State<SplashScreen> {
         dataAssignedTo = "District Magistrate";
         loggedUserDetail = "DM";
       }
-      else if(obtainedUser == "ADCE"){
+      else if(obtainedUser == "ADC(E)"){
         dataAssignedTo = "Additional District Collector(East)";
         loggedUserDetail = "ADC(E)";
       }
-      else if(obtainedUser == "ADCHQ"){
+      else if(obtainedUser == "ADC(HQ)"){
         dataAssignedTo = "Additional District Collector(HQ)";
         loggedUserDetail = "ADC(HQ)";
       }
-      else if(obtainedUser == "SDME"){
+      else if(obtainedUser == "SDM(E)"){
         dataAssignedTo = "Sub Divisional Magistrate(East)";
         loggedUserDetail = "SDM(E)";
       }

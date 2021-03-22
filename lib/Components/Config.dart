@@ -1,6 +1,6 @@
 class Config {
   // Setting the API url and parameters as provided by website
-  static String url = 'http://10.0.2.2:3000/login';
+//  static String url = 'http://10.0.2.2:3000/login';
 
   // Formatting the final URL, So we can use it directly on our app
   static String apiUrl =

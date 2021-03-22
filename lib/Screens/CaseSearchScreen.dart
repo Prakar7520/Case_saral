@@ -51,13 +51,19 @@ class _CaseSearchScreenState extends State<CaseSearchScreen> {
     });
 
   }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<CaseProvider>(context,listen: false).setCaseDateSearch(dateNowSearch);
+  }
 
   @override
   Widget build(BuildContext context) {
 
     Size size = MediaQuery.of(context).size;
     setState(() {
-      cases = Provider.of<CaseProvider>(context).getCase();
+      cases = Provider.of<CaseProvider>(context).getCaseDateSearch();
       if(cases != null){
         getData = true;
       }
@@ -172,7 +178,10 @@ class _CaseSearchScreenState extends State<CaseSearchScreen> {
                           else{
                             setState(() {
                               caseId1 = int.parse(text2);
-                              Provider.of<CaseProvider>(context,listen: false).setCaseID(text2);
+                              print("aghsd");
+                              Provider.of<CaseProvider>(context,listen: false).setCaseID(caseId1.toString());
+                              print("aghsd");
+
                             });
                           }
                         },

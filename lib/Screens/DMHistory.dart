@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
 import 'package:ver2/Components/DatalnTable.dart';
 import 'package:ver2/Models/MyCaseList.dart';
@@ -32,7 +33,7 @@ class _DMHistoryState extends State<DMHistory> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<CaseProvider>(context,listen: false).setOfficerCase(officerName);
+    Provider.of<CaseProvider>(context,listen: false).setDateAssign(dateNowSearch, officerName);
 
   }
 
@@ -50,8 +51,9 @@ class _DMHistoryState extends State<DMHistory> {
         _selectedDate = pickedDate;
         dateNow = DateFormat('dd/MM/yyyy').format(_selectedDate);
         dateNowSearch = DateFormat('ddMMyyyy').format(_selectedDate);
+        print(dateNowSearch);
         dmHere = true;
-        Provider.of<CaseProvider>(context,listen: false).setCaseDateSearch(dateNowSearch);
+        Provider.of<CaseProvider>(context,listen: false).setDateAssign(dateNowSearch, officerName);
       });
     });
 
@@ -62,7 +64,7 @@ class _DMHistoryState extends State<DMHistory> {
     Size size = MediaQuery.of(context).size;
     bool getData = false;
     setState(() {
-      cases = Provider.of<CaseProvider>(context,listen: false).getOfficerCase();
+      cases = Provider.of<CaseProvider>(context,listen: false).getDateAssign();
       if(cases != null){
         getData = true;
       }
@@ -97,6 +99,7 @@ class _DMHistoryState extends State<DMHistory> {
                             else{
                               setState(() {
                                 caseId1 = int.parse(text1);
+                                Provider.of<CaseProvider>(context, listen: false).setCaseDateSearch(dateNowSearch);
                               });
                             }
                           },
@@ -122,6 +125,7 @@ class _DMHistoryState extends State<DMHistory> {
                                   else{
                                     setState(() {
                                       caseId = int.parse(text1);
+                                      Provider.of<CaseProvider>(context, listen: false).setCaseDateSearch(dateNowSearch);
                                     });
                                   }
                                 },

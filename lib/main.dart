@@ -96,7 +96,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: CaseProvider(),
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'CCMS',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,

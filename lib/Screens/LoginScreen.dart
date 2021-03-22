@@ -31,7 +31,6 @@ Future<void> _launchURLMail() async {
 class LoginScreen extends StatefulWidget {
   static String id = 'LoginScreen';
   List<UserModel> user;
-
   LoginScreen({Key key}) : super(key: key);
 
   @override
@@ -49,6 +48,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String con1 = "";
   String con2 = "";
+  var designation;
+  final _formKey = GlobalKey<FormState>();
+
 
   List<String> graphDate;
   Future<List<LoginModel>> loginUser( username, password) async  {
@@ -72,18 +74,22 @@ class _LoginScreenState extends State<LoginScreen> {
       print(response.statusCode);
 
       if(response.statusCode == 201){
+        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         var x = jsonDecode(response.body);
         print(x["token"]);
         var tok=x["token"];
         print(tok);
+        designation = x["designation"];
+        print(designation);
         await ss.writeSecureData('token', tok);
+        sharedPreferences.setString('LoggedUser',designation);
 
 //        Navigator.pushReplacement(context, MaterialPageRoute(
 //            builder:  (context) => StartPage()));
         RestartWidget.restartApp(context);
       }
       else{
-        Spinner();
+        _popupDialog(context);
       }
 
 
@@ -106,6 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
     return new Form(
+      key: _formKey,
         child: MaterialApp(
           theme: ThemeData(
             primaryColor: Colors.purple,
@@ -169,8 +176,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               InputField(size: size, onPressed: (value){
                                 setState(() {
                                   con2 = value;
-
-
                                 });
                               }, text: 'Password', passwordOn: true, newIcons: Icon(Icons.lock),),
 
@@ -181,17 +186,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                 // ignore: deprecated_member_use
                                 child: FlatButton(
                                   onPressed: () async{
-                                    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                    try{
-                                      //var b=EncryptPassword(con1);
-                                      if(loginUser(con1, con2) != null)
-                                      {
-                                        sharedPreferences.setString('LoggedUser',con1);
+                                    if(_formKey.currentState.validate()){
+                                      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                                      try{
+                                        //var b=EncryptPassword(con1);
+                                        if(loginUser(con1, con2) != null)
+                                        {
+                                          sharedPreferences.setString('LoggedUser',designation);
+                                          print(designation);
+                                        }
+                                        //print(a);
+                                      }catch(e){
+                                        print("Exception ");
                                       }
-                                      //print(a);
-                                    }catch(e){
-                                      print("Exception ");
                                     }
+
                                   },
                                   padding: EdgeInsets.all(16),
                                   color: Color.fromRGBO(58, 133, 191, 1),
@@ -319,6 +328,12 @@ class InputField extends StatelessWidget {
     return Container(
       width: size.width *0.7,
       child: TextFormField(
+        validator: (con1){
+          if(con1 == null || con1.isEmpty){
+            return "Field is Empty";
+          }
+          return null;
+        },
         autocorrect: false,
         obscureText: passwordOn,
         onChanged: onPressed,
