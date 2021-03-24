@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
+import 'package:ver2/Components/DatabaseStuffs/CaseProvider.dart';
 import 'package:ver2/Components/Spinner.dart';
 import 'package:ver2/Screens/LoginScreen.dart';
 import 'package:ver2/Screens/StartPage.dart';

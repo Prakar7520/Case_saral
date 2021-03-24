@@ -84,7 +84,7 @@ class NotificationPlugin {
   }
 
   Future<void> showDailyMorningAtTime() async {
-    var time = Time(9,30,0);
+    var time = Time(14,41,0);
     var androidChannelSpecifics = AndroidNotificationDetails(
       'CHANNEL_ID 4',
       'CHANNEL_NAME 4',

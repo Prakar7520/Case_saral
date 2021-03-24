@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/provider.dart';
-import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
+import 'package:ver2/Components/DatabaseStuffs/CaseProvider.dart';
 import 'package:ver2/Components/DatalnTable.dart';
 import 'package:ver2/Models/MyCaseList.dart';
 
@@ -34,7 +33,6 @@ class _DMHistoryState extends State<DMHistory> {
     // TODO: implement initState
     super.initState();
     Provider.of<CaseProvider>(context,listen: false).setDateAssign(dateNowSearch, officerName);
-
   }
 
   void _presentDataPicker() {
@@ -61,10 +59,13 @@ class _DMHistoryState extends State<DMHistory> {
 
   @override
   Widget build(BuildContext context) {
+    // Provider.of<CaseProvider>(context,listen: false).setDateAssign(dateNowSearch, officerName);
+    print(dateNowSearch);
+    print(officerName);
     Size size = MediaQuery.of(context).size;
     bool getData = false;
     setState(() {
-      cases = Provider.of<CaseProvider>(context,listen: false).getDateAssign();
+      cases = Provider.of<CaseProvider>(context).getDateAssign();
       if(cases != null){
         getData = true;
       }
@@ -171,7 +172,7 @@ class _DMHistoryState extends State<DMHistory> {
                         setState(() {
                           _selectedChoice = value;
                           officerName = _selectedChoice;
-                          Provider.of<CaseProvider>(context,listen: false).setOfficerCase(officerName);
+                          Provider.of<CaseProvider>(context,listen: false).setDateAssign(dateNowSearch, officerName);
                         });
                       },
                       items: _choice.map<DropdownMenuItem<String>>((value){
@@ -187,9 +188,13 @@ class _DMHistoryState extends State<DMHistory> {
                 Center(child: getData == true ? SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: DataInTable(dateSent: dateNow,caseId: caseId,cases: cases,officerName: officerName, dmHere: dmHere,)
-                ):Container(
-                    height:size.height *0.8,
-                    child: Center(child: Text("Error Connecting To NIC Network", style: TextStyle(fontWeight: FontWeight.bold),),)),
+                ):Center(
+                    child: Container(
+                    height:100,
+                    width: 100,
+                    child: CircularProgressIndicator()
+                )
+                )
                 )
               ],
             ),

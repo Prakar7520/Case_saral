@@ -1,5 +1,5 @@
 import 'package:provider/provider.dart';
-import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
+import 'package:ver2/Components/DatabaseStuffs/CaseProvider.dart';
 import 'package:ver2/Components/SettingPage.dart';
 import 'package:ver2/Screens/AddRemarks.dart';
 import 'package:ver2/Screens/CaseSearchScreen.dart';
@@ -11,7 +11,6 @@ import 'package:ver2/Screens/StartPage.dart';
 import 'package:ver2/Screens/WelcomeInstruction.dart';
 import 'package:ver2/Screens/detailsScreen.dart';
 import 'package:flutter/material.dart';
-
 
 import 'Components/SplashScreen.dart';
 

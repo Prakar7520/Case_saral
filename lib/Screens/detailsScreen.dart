@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
+import 'package:ver2/Components/DatabaseStuffs/CaseProvider.dart';
 import 'package:ver2/Models/DetailScreenArgument.dart';
 import 'package:ver2/Models/MyCaseList.dart';
 import 'package:ver2/Services/Storage.dart';

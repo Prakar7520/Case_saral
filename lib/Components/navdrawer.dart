@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ver2/Components/SplashScreen.dart';
@@ -7,7 +8,7 @@ import 'package:ver2/Screens/WelcomeInstruction.dart';
 import 'package:ver2/main.dart';
 import 'package:ver2/Components/SettingPage.dart';
 import '../Screens/ReachUs.dart';
-import 'DatabaseStuffs/Databasedar.dart';
+import 'DatabaseStuffs/CaseProvider.dart';
 
 class NavDrawer extends StatefulWidget {
   @override
@@ -41,6 +42,9 @@ class _NavDrawerState extends State<NavDrawer> {
             leading: Icon(Icons.history),
             title: Text("Officer's Cases"),
             onTap: (){
+              String officerName = "ADC(E)";
+              String dateNowSearch = DateFormat('ddMMyyyy').format(DateTime.now());
+              Provider.of<CaseProvider>(context,listen: false).setDateAssign(dateNowSearch, officerName);
               Navigator.pushNamed(context, DMHistory.id);
             },
           ): Container(),

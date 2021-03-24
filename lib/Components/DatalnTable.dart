@@ -1,5 +1,5 @@
 import 'package:provider/provider.dart';
-import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
+import 'package:ver2/Components/DatabaseStuffs/CaseProvider.dart';
 import 'package:ver2/Components/SplashScreen.dart';
 import 'package:ver2/Components/StatusContainer.dart';
 import 'package:ver2/Models/DetailScreenArgument.dart';
@@ -171,7 +171,7 @@ class _DataInTableState extends State<DataInTable> {
           item.isEmpty ? Container(
             padding: EdgeInsets.all(12),
               margin: EdgeInsets.all(12),
-              child: Card(child: Text("No Cases for the current selected Date",style: TextStyle(fontWeight: FontWeight.bold),))
+              child: Card(child: Text("No Cases for the current selected Date or wait for reload",style: TextStyle(fontWeight: FontWeight.bold),))
           ) : Text("")
 
         ],

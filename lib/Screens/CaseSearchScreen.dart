@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:ver2/Components/DatabaseStuffs/Databasedar.dart';
+import 'package:ver2/Components/DatabaseStuffs/CaseProvider.dart';
 import 'package:ver2/Components/DatalnTable.dart';
 import 'package:ver2/Components/TextFieldContainer.dart';
 import 'package:flutter/cupertino.dart';
@@ -221,9 +221,15 @@ class _CaseSearchScreenState extends State<CaseSearchScreen> {
 
         ],
       ),
-    ): Container(
-        // height:300,
-        child: Center(child: Text("Error Connecting To NIC Network", style: TextStyle(fontWeight: FontWeight.bold),),));
+    ):
+    Center(
+        child: Container(
+        height:100,
+        width: 100,
+        // child: Center(child: Text("Error Connecting To NIC Network", style: TextStyle(fontWeight: FontWeight.bold),),)
+      child: CircularProgressIndicator(),
+    )
+    );
   }
 }
 

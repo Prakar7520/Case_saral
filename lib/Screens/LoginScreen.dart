@@ -2,18 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ver2/Components/Config.dart';
-import 'package:ver2/Components/DatabaseStuffs/ApiResponse.dart';
-import 'package:ver2/Components/Spinner.dart';
 import 'package:ver2/Models/UserModel.dart';
-import 'package:ver2/Screens/StartPage.dart';
 import 'package:ver2/Services/Storage.dart';
 import 'package:ver2/main.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
 import '../Models/LoginModel.dart';
 
 
