@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ver2/Models/UserModel.dart';
+import 'package:ver2/Services/DistrictSelect.dart';
 import 'package:ver2/Services/Storage.dart';
 import 'package:ver2/main.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -44,6 +45,11 @@ class _LoginScreenState extends State<LoginScreen> {
   String con2 = "";
   var designation;
   final _formKey = GlobalKey<FormState>();
+
+  List<String> state = ['Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa','Gujarat','Haryana','Himachal Pradesh','Jammu and Kashmir','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal','Andaman and Nicobar','Chandigarh','Dadra and Nagar Haveli','Daman and Diu','Lakshadweep','Delhi','Puducherry'];
+  String selectedState = 'Andhra Pradesh';
+  List<String> district = [];
+  String selecteddistrict = "";
 
 
   List<String> graphDate;
@@ -104,7 +110,6 @@ class _LoginScreenState extends State<LoginScreen> {
     Size size = MediaQuery.of(context).size;
 
 
-
     return new Form(
       key: _formKey,
         child: MaterialApp(
@@ -160,6 +165,41 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               SizedBox(height: 60,),
+
+                              DropdownButton<String>(
+                                elevation: 12,
+                                value: selectedState,
+                                onChanged: (value){
+                                  setState(() {
+                                    selectedState = value;
+                                    district = DistrictSelect(state: selectedState).selectDistrict();
+                                    selecteddistrict = district.first;
+                                  });
+                                },
+                                items: state.map<DropdownMenuItem<String>>((value){
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+
+
+                              DropdownButton<String>(
+                                elevation: 12,
+                                value: selecteddistrict,
+                                onChanged: (value){
+                                  setState(() {
+                                    selecteddistrict = value;
+                                  });
+                                },
+                                items: district.map<DropdownMenuItem<String>>((value){
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
 
                               InputField(size: size, onPressed: (value){
                                 setState(() {
